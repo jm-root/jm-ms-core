@@ -48,7 +48,7 @@ if (typeof module !== 'undefined' && module.exports) {
                     cb(null, {o:123});
                 },
 
-                handler: function(opts, cb, next){
+                handle: function(opts, cb, next){
                     logger.debug('o %s', utils.formatJSON(opts));
                     next();
                 }

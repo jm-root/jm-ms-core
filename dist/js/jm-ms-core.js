@@ -8,12 +8,12 @@ if (typeof module !== 'undefined' && module.exports) {
  * @class  ms
  */
 (function(){
+    if(jm.ms) return;
     jm.ms = function(opts){
         var router = jm.ms.router(opts);
         return router;
     };
 })();
-
 
 var jm = jm || {};
 if (typeof module !== 'undefined' && module.exports) {
@@ -21,7 +21,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 (function(){
-    jm.ms = jm.ms || {};
+    if(jm.ms.consts) return;
     var ms = jm.ms;
 
     var ERRCODE_MS = 900;
@@ -43,6 +43,7 @@ if ((typeof exports !== 'undefined' && typeof module !== 'undefined')) {
 }
 
 (function () {
+    if(jm.ms.pathToRegexp) return;
     jm.ms.pathToRegexp = pathToRegexp;
     pathToRegexp.parse = parse;
     pathToRegexp.compile = compile;
@@ -435,14 +436,14 @@ if ((typeof exports !== 'undefined' && typeof module !== 'undefined')) {
 
 })();
 
-
 var jm = jm || {};
 if (typeof module !== 'undefined' && module.exports) {
     jm = require('jm-core');
 }
 
 (function(){
-    var ms = jm.ms || {};
+    if(jm.ms.Route) return;
+    var ms = jm.ms;
     var ERR = jm.ERR;
     var pathToRegexp = ms.pathToRegexp;
 
@@ -589,7 +590,8 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 (function(){
-    var ms = jm.ms || {};
+    if(jm.ms.Router) return;
+    var ms = jm.ms;
     var ERR = jm.ERR;
 
     var cb_default = function(err, doc){};
@@ -803,9 +805,7 @@ if (typeof module !== 'undefined' && module.exports) {
                 opts = {
                     uri: opts
                 };
-                if (typeof cb === 'object') {
-                    opts.fn = cb;
-                } else if (Array.isArray(cb)) {
+                if (typeof cb === 'object') {   //object 或者 数组
                     opts.fn = cb;
                 } else {
                     opts.fn = slice.call(arguments, 1);
@@ -973,8 +973,9 @@ if ((typeof exports !== 'undefined' && typeof module !== 'undefined')) {
 }
 
 (function () {
+    if(jm.ms.utils) return;
     var slice = Array.prototype.slice;
-    var ms = jm.ms || {};
+    var ms = jm.ms;
 
     /**
      * utils对象
@@ -1064,7 +1065,8 @@ if ((typeof exports !== 'undefined' && typeof module !== 'undefined')) {
 }
 
 (function () {
-    var ms = jm.ms || {};
+    if(jm.ms.client) return;
+    var ms = jm.ms;
     var ERR = jm.ERR;
     var registries = jm.root.registries;
     registries.ms = {
@@ -1093,22 +1095,22 @@ if ((typeof exports !== 'undefined' && typeof module !== 'undefined')) {
         return this;
     },
 
-        ms.unregistClientType = function (opts, cb) {
-            opts = opts || {};
-            var err = null;
-            var doc = null;
-            if (!opts.type) {
-                err = new Error('invalid params');
-                doc = ERR.FA_PARAMS;
-            } else {
-                var type = opts.type.toLowerCase();
-                if (regTypes[type]) {
-                    delete regTypes[type];
-                }
+    ms.unregistClientType = function (opts, cb) {
+        opts = opts || {};
+        var err = null;
+        var doc = null;
+        if (!opts.type) {
+            err = new Error('invalid params');
+            doc = ERR.FA_PARAMS;
+        } else {
+            var type = opts.type.toLowerCase();
+            if (regTypes[type]) {
+                delete regTypes[type];
             }
-            if (cb) cb(err, doc);
-            return this;
-        },
+        }
+        if (cb) cb(err, doc);
+        return this;
+    },
 
     /**
      * 创建客户端
@@ -1123,29 +1125,29 @@ if ((typeof exports !== 'undefined' && typeof module !== 'undefined')) {
      * @param cb 回调cb(err,doc)
      * @returns {jm.ms}
      */
-        ms.client = function (opts, cb) {
-            opts = opts || {};
-            var err = null;
-            var doc = null;
-            var type = null;
-            if(opts.uri){
-                type = ms.utils.getUriProtocol(opts.uri);
-            }
-            type = opts.type || type || 'http';
-            type = type.toLowerCase();
-            var o = regTypes[type];
-            if (!o) {
-                err = new Error('invalid type');
-                doc = ERR.ms.FA_INVALIDTYPE;
-            } else {
-                o.fn.call(this, opts, function(err, doc){
-                    ms.utils.enableType(doc, ['get', 'post', 'put', 'delete']);
-                    cb(err, doc);
-                });
-                return this;
-            }
-            if (cb) cb(err, doc);
+    ms.client = function (opts, cb) {
+        opts = opts || {};
+        var err = null;
+        var doc = null;
+        var type = null;
+        if(opts.uri){
+            type = ms.utils.getUriProtocol(opts.uri);
+        }
+        type = opts.type || type || 'http';
+        type = type.toLowerCase();
+        var o = regTypes[type];
+        if (!o) {
+            err = new Error('invalid type');
+            doc = ERR.ms.FA_INVALIDTYPE;
+        } else {
+            o.fn.call(this, opts, function(err, doc){
+                ms.utils.enableType(doc, ['get', 'post', 'put', 'delete']);
+                cb(err, doc);
+            });
             return this;
-        };
+        }
+        if (cb) cb(err, doc);
+        return this;
+    };
 
 })();
