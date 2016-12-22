@@ -13,6 +13,48 @@ if (typeof module !== 'undefined' && module.exports) {
         var router = jm.ms.router(opts);
         return router;
     };
+
+    /**
+     * 创建一个代理路由
+     * 支持多种参数格式, 例如
+     * proxy({uri:uri}, cb)
+     * proxy(uri, cb)
+     * 可以没有回调函数cb
+     * proxy({uri:uri})
+     * proxy(uri)
+     * @function ms#proxy
+     * @param {Object} opts 参数
+     * @example
+     * opts参数:{
+         *  uri: 目标uri(必填)
+         * }
+     * @param cb 回调cb(err,doc)
+     * @returns {Router}
+     */
+    jm.ms.proxy = function(opts, cb){
+        opts || ( opts = {} );
+        var err = null;
+        var doc = null;
+        if(typeof opts === 'string') {
+            opts = {uri:opts};
+        }
+        if(!opts.uri){
+            doc = ERR.FA_PARAMS;
+            err = new Error(doc.msg, doc.err);
+            if (!cb) throw err;
+        }
+        var router = jm.ms();
+        jm.ms.client(opts, function(err, client){
+            if(err) return cb(err, client);
+            router.use(function(opts, cb) {
+                client.request(opts, cb);
+            });
+            router.client = client;
+            if(cb) cb(null, router);
+        });
+        return router;
+    };
+
 })();
 
 var jm = jm || {};
@@ -824,6 +866,75 @@ if (typeof module !== 'undefined' && module.exports) {
             }
 
             return this._use(opts, cb);
+        },
+
+        _proxy: function(opts, cb) {
+            var self = this;
+            opts || (opts = {});
+            cb || ( cb = function(err, doc){
+                if(err) throw err;
+            });
+            if(!opts.target){
+                var doc = ERR.FA_PARAMS;
+                var err = new Error(doc.msg, doc.err);
+                cb(err, doc);
+            }
+            this.emit('proxy', opts);
+            if(typeof opts.target === 'string') {
+                opts.target = {uri:opts.target};
+            }
+            if(opts.changeOrigin) {
+                ms.client(opts.target, function(err, client){
+                    if(err) return cb(err, client);
+                    self.use(opts.uri, function(opts, cb) {
+                        client.request(opts, cb);
+                    });
+                    cb();
+                });
+            }else {
+                ms.proxy(opts.target, function(err, doc){
+                    if(err) return cb(err, doc)
+                    self.use(opts.uri, doc, cb);
+                })
+            }
+
+            return this;
+        },
+        /**
+         * 添加代理
+         * 支持多种参数格式, 例如
+         * proxy({uri:uri, target:target, changeOrigin:true}, cb)
+         * proxy(uri, target, changeOrigin, cb)
+         * proxy(uri, target, cb)
+         * 可以没有回调函数cb
+         * proxy({uri:uri, target:target, changeOrigin:true})
+         * proxy(uri, target, changeOrigin)
+         * proxy(uri, target)
+         * @function Router#proxy
+         * @param {Object} opts 参数
+         * @example
+         * opts参数:{
+         *  uri: 接口路径(必填)
+         *  target: 目标路径或者参数(必填)
+         *  changeOrigin: 是否改变originUri(可选， 默认fasle)
+         * }
+         * @param cb 回调cb(err,doc)
+         * @returns {this}
+         */
+        proxy: function(uri, target, changeOrigin, cb) {
+            var opts = uri;
+            if(typeof uri === 'string') {
+                opts = {
+                    uri: uri,
+                    target: target
+                };
+                if(typeof changeOrigin === 'boolean') {
+                    opts.changeOrigin = changeOrigin;
+                } else if (changeOrigin && typeof changeOrigin === 'function') {
+                    cb = changeOrigin;
+                }
+            }
+            return this._proxy(opts, cb);
         },
 
         /**
