@@ -1,6 +1,6 @@
 {
   "name": "jm-ms-core",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "MicroService core lib",
   "main": "./lib/index",
   "scripts": {
