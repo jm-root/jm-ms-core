@@ -41,5 +41,15 @@ if (typeof module !== 'undefined' && module.exports) {
         log(err, doc);
     });
 
+    app.clear();
+    logger.debug('clear all routes');
+    app.request({
+        uri: '/users/123',
+        data: {
+            test: true
+        }
+    }, function(err, doc){
+        log(err, doc);
+    });
 
 })();
