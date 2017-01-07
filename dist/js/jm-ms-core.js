@@ -9,6 +9,7 @@ if (typeof module !== 'undefined' && module.exports) {
  */
 (function(){
     if(jm.ms) return;
+    var ERR = jm.ERR;
     jm.ms = function(opts){
         var router = jm.ms.router(opts);
         return router;
@@ -663,6 +664,22 @@ if (typeof module !== 'undefined' && module.exports) {
 
             // alias methods
             ms.utils.enableType(self, ['get', 'post', 'put', 'delete']);
+        },
+
+        /**
+         * 清空接口定义
+         * @function Router#clear
+         * @param {Object} opts 参数
+         * @example
+         * opts参数:{
+         * }
+         * @param cb 回调cb(err,doc)
+         * @returns {Object}
+         */
+        clear: function(opts, cb) {
+            this._routes.splice(0);
+            if(cb) cb(null, true);
+            return this;
         },
 
         /**
