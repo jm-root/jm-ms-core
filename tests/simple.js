@@ -29,6 +29,12 @@ if (typeof module !== 'undefined' && module.exports) {
         cb(null, {ret:true});
     };
 
+    app.use({
+        handle: function(opts, cb, next) {
+            logger.debug('object called. %s', utils.formatJSON(opts));
+            next();
+        }
+    });
     app.use(fn);
     app.add('/users/:id', fn2);
 
