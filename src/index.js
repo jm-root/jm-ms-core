@@ -16,6 +16,7 @@ class Root {
     constructor() {
         error.enableErr(this);
         mdl.enableModule(this);
+        this.utils = utils;
         this.clientModules = {};
         this.serverModules = {};
     }
