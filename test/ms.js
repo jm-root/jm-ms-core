@@ -9,18 +9,19 @@ let handle = (opts, cb, next) => {
 
 let cb = (err, doc) => {
     if(err) console.log(err.stack);
-    console.log('%j', doc);
+    if(doc) console.log('%j', doc);
 };
 
 let ms = new MS();
 let app = ms.router();
 
-let mdlTest = function (app, opts, cb) {
+let mdlTest = function (opts, cb) {
+    let app = this;
     app.clientModules.http = (opts, cb) => {
         let client = {
             request: function (opts, cb) {
                 let r = utils.preRequest.apply(this, arguments);
-                r.cb(null, {ret: 1});
+                r.cb(null, {ret: true});
             }
         };
         cb(null, client);
@@ -45,7 +46,9 @@ describe('ms', function () {
         ms.use(mdlTest);
         ms.client({uri:'http://ww.ja.cnom'}, function (err, doc) {
             expect(doc).to.be.an('object');
-            doc.get('/', cb)
+            doc.get('/', function(err, doc){
+                expect(doc.ret).to.be.ok;
+            })
         })
     });
 

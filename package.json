@@ -25,10 +25,10 @@
   },
   "homepage": "https://github.com/jm-root/jm-ms-core",
   "dependencies": {
-    "jm-err": "^0.0.3",
-    "jm-event": "^0.0.2",
-    "jm-module": "^0.0.2",
-    "jm-utils": "^0.0.3",
+    "jm-err": "^1.0.0",
+    "jm-event": "^1.0.1",
+    "jm-module": "^1.0.0",
+    "jm-utils": "^1.0.1",
     "path-to-regexp": "^1.7.0"
   },
   "devDependencies": {

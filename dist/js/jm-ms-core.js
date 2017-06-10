@@ -27,6 +27,10 @@ var _jmErr = require('jm-err');
 
 var _jmErr2 = _interopRequireDefault(_jmErr);
 
+var _jmEvent = require('jm-event');
+
+var _jmEvent2 = _interopRequireDefault(_jmEvent);
+
 var _jmModule = require('jm-module');
 
 var _jmModule2 = _interopRequireDefault(_jmModule);
@@ -286,7 +290,7 @@ if (typeof global !== 'undefined' && global) {
             return root.router(opts);
         };
         var _ms = jm.ms;
-        event.enableEvent(_ms);
+        _jmEvent2.default.enableEvent(_ms);
         _ms.root = root;
 
         _ms.proxy = function (opts, cb) {
@@ -309,7 +313,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = Root;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./err":1,"./router":4,"./utils":5,"jm-err":6,"jm-module":8}],3:[function(require,module,exports){
+},{"./err":1,"./router":4,"./utils":5,"jm-err":6,"jm-event":7,"jm-module":8}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1228,38 +1232,19 @@ var disableErr = function disableErr(obj) {
     delete obj.errMsg;
 };
 
-/**
- * module usable
- * @param {Object} obj target object
- * @param {String} [name] name to bind
- * @return {{name: string, unuse: unuse}}
- */
-var moduleErr = function moduleErr(obj) {
-    var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Err';
-
-    enableErr(obj, name);
-
-    return {
-        name: name,
-        unuse: function unuse(obj) {
-            disableErr(obj, name);
-        }
-    };
-};
-
 var $ = {
     Err: Err,
     errMsg: errMsg,
     err: err,
     enableErr: enableErr,
-    disableErr: disableErr,
-    moduleErr: moduleErr
+    disableErr: disableErr
 };
 
 if (typeof global !== 'undefined' && global) {
     global.jm || (global.jm = {});
     var jm = global.jm;
     if (!jm.enableErr) {
+        enableErr(jm);
         for (var key in $) {
             jm[key] = $[key];
         }
@@ -1548,9 +1533,10 @@ var disableEvent = function disableEvent(obj) {
     }
 };
 
-var moduleEvent = function moduleEvent(obj) {
-    var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'event';
+var moduleEvent = function moduleEvent() {
+    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'event';
 
+    var obj = this;
     obj.enableEvent = enableEvent;
     obj.disableEvent = disableEvent;
 
@@ -1632,8 +1618,12 @@ var Modulable = function () {
          * @param {Function} [cb] callback function
          * @return {Modulable} for chaining
          */
-        value: function use(fn, opts, cb) {
-            var m = fn(this, opts, cb);
+        value: function use(fn) {
+            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+                args[_key - 1] = arguments[_key];
+            }
+
+            var m = fn.apply(this, args);
             if (m && m.name) {
                 this._modules[m.name] = m;
             }
@@ -1762,7 +1752,7 @@ if (typeof global !== 'undefined' && global) {
     if (!jm.enableModule) {
         for (var key in $) {
             jm[key] = $[key];
-        }
+        }enableModule(jm);
     }
 }
 
@@ -1812,15 +1802,16 @@ var utils = {
     }
 };
 
-var moduleUtils = function moduleUtils($) {
-    var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'utils';
+var moduleUtils = function moduleUtils() {
+    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'utils';
 
-    $[name] = utils;
+    var app = this;
+    app[name] = utils;
 
     return {
         name: name,
-        unuse: function unuse($) {
-            delete $[name];
+        unuse: function unuse() {
+            delete app[name];
         }
     };
 };

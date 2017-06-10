@@ -1,4 +1,5 @@
 import error from 'jm-err';
+import event from 'jm-event';
 import mdl from 'jm-module';
 import utils from './utils';
 import Router from './router';

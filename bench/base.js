@@ -56,7 +56,7 @@ suite
         test.call(o, 'jeff', 123);
     })
     .add('apply, no params', () => {
-        test.apply(o);
+        test.apply(o, arguments);
     })
     .add('apply, with params', () => {
         test.apply(o, ['jeff', 123]);
