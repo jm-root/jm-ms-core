@@ -21,6 +21,7 @@ class Route {
         this.type = opts.type;
         this._fns = [];
         this.keys = [];
+        opts.router && (this.router = opts.router);
 
         this.regexp = pathtoRegexp(this.uri, this.keys, opts);
 
