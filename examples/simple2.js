@@ -1,31 +1,32 @@
-var jm = jm || {};
 if (typeof module !== 'undefined' && module.exports) {
-    jm = require('../lib');
+    require('jm-err');
+    require('jm-utils');
+    require('../lib');
     Promise = require('bluebird');
 }
 
 (function(){
     var ms = jm.ms;
-    var logger = jm.logger;
-    var utils = ms.utils;
-    var app = ms();
+    var logger = console;
+    var utils = jm.utils;
+    var app = jm.ms();
 
     var log = function(err, doc){
         if (err) {
             logger.error(err.stack);
         }
         if(doc){
-            logger.debug('%s', utils.formatJSON(doc));
+            logger.info('%s', utils.formatJSON(doc));
         }
     };
 
     var fn = function(opts, cb, next){
-        logger.debug('fn called. %s', utils.formatJSON(opts));
+        logger.info('fn called. %s', utils.formatJSON(opts));
         next();
     };
 
     var fn2 = function(opts, cb, next){
-        logger.debug('fn2 called. %s', utils.formatJSON(opts));
+        logger.info('fn2 called. %s', utils.formatJSON(opts));
         cb(null, {ret:true});
     };
 

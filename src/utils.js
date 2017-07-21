@@ -1,7 +1,6 @@
 import util from 'jm-utils';
 
 let utils = util.utils;
-let slice = Array.prototype.slice;
 
 utils.enableType = function (obj, types) {
     if (!Array.isArray(types)) {
@@ -19,24 +18,24 @@ utils.enableType = function (obj, types) {
 };
 
 utils.preRequest = function (uri, type, data, params, timeout, cb) {
-    //uri为对象时直接返回
+    // uri为对象时直接返回
     if (typeof uri !== 'string') {
         return {
             opts: uri,
-            cb: type
+            cb: type,
         };
     }
 
     let opts = {
-        uri: uri
+        uri: uri,
     };
 
     let r = {
-        opts: opts
+        opts: opts,
     };
 
-    //第2个参数可能为空，cb，timeout
-    if(type === undefined) {
+    // 第2个参数可能为空，cb，timeout, data
+    if (type === undefined) {
         return r;
     }
     if (typeof type === 'function') {
@@ -44,13 +43,15 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
         return r;
     }
     if (typeof type === 'number') {
-        opts.timeout = type;
-    } else {
+        return utils.preRequest(uri, null, null, null, type, data);
+    } else if (type && typeof type === 'object') {
+        return utils.preRequest(uri, null, type, data, params, timeout);
+    } else if (typeof type === 'string') {
         opts.type = type;
     }
 
-    //第3个参数可能为空，cb，timeout, data
-    if(data === undefined) {
+    // 第3个参数可能为空，cb，timeout, data
+    if (data === undefined) {
         return r;
     }
     if (typeof data === 'function') {
@@ -58,13 +59,13 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
         return r;
     }
     if (typeof data === 'number') {
-        opts.timeout = data;
-    } else if (typeof data === 'object') {
+        return utils.preRequest(uri, type, null, null, data, params);
+    } else if (data && typeof data === 'object') {
         opts.data = data;
     }
 
-    //第4个参数可能为空，cb，timeout, params
-    if(params === undefined) {
+    // 第4个参数可能为空，cb，timeout, params
+    if (params === undefined) {
         return r;
     }
     if (typeof params === 'function') {
@@ -72,13 +73,13 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
         return r;
     }
     if (typeof params === 'number') {
-        opts.timeout = params;
-    } else if (typeof params === 'object') {
+        return utils.preRequest(uri, type, data, null, params, timeout);
+    } else if (params && typeof params === 'object') {
         opts.params = params;
     }
 
-    //第5个参数可能为空，cb，timeout
-    if(timeout === undefined) {
+    // 第5个参数可能为空，cb，timeout
+    if (timeout === undefined) {
         return r;
     }
     if (typeof timeout === 'function') {
@@ -89,8 +90,8 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
         opts.timeout = timeout;
     }
 
-    //第6个参数可能为空，cb
-    if(cb === undefined) {
+    // 第6个参数可能为空，cb
+    if (cb === undefined) {
         return r;
     }
     if (typeof cb === 'function') {
