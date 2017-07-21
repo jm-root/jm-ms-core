@@ -4,8 +4,9 @@ import error from 'jm-err';
 import event from 'jm-event';
 let Err = error.Err;
 
-let err_notfound = error.err(Err.FA_NOTFOUND);
-let cb_default = (err, doc) => {};
+let errNotfound = error.err(Err.FA_NOTFOUND);
+let cbDefault = (err, doc) => {
+};
 
 let slice = Array.prototype.slice;
 
@@ -26,7 +27,7 @@ class Router {
      */
     constructor(opts = {}) {
         this._routes = [];
-        ['mergeParams', 'sensitive', 'strict'].forEach( (key) => {
+        ['mergeParams', 'sensitive', 'strict'].forEach((key) => {
             opts[key] && (this[key] = opts[key]);
         });
         // alias methods
@@ -149,7 +150,7 @@ class Router {
         let doc = null;
         if (opts && opts instanceof Router) {
             opts = {
-                fn: opts
+                fn: opts,
             };
         }
         if (!opts.fn) {
@@ -166,8 +167,8 @@ class Router {
                 opts.router = router;
                 opts.fn = function (opts, cb, next) {
                     router.handle(opts, cb, next);
-                }
-            } else if (typeof opts.fn === "object") {
+                };
+            } else if (typeof opts.fn === 'object') {
                 let router = opts.fn;
                 if (router.request) {
                     opts.router = router;
@@ -176,12 +177,12 @@ class Router {
                             cb(err, doc);
                             next();
                         });
-                    }
+                    };
                 } else if (router.handle) {
                     opts.router = router;
                     opts.fn = function (opts, cb, next) {
                         router.handle(opts, cb, next);
-                    }
+                    };
                 }
             }
             return this._add(opts, cb);
@@ -224,12 +225,12 @@ class Router {
      * @param cb 回调cb(err,doc)
      * @return {Router} for chaining
      */
-    use(opts, cb) {
+    use (opts, cb) {
         if (typeof opts === 'string') {
             opts = {
-                uri: opts
+                uri: opts,
             };
-            if (typeof cb === 'object') {   //object 或者 数组
+            if (typeof cb === 'object') {   // object 或者 数组
                 opts.fn = cb;
             } else {
                 opts.fn = slice.call(arguments, 1);
@@ -237,18 +238,18 @@ class Router {
             cb = null;
         } else if (typeof opts === 'function') {
             opts = {
-                fn: slice.call(arguments, 0)
+                fn: slice.call(arguments, 0),
             };
             cb = null;
         } else if (Array.isArray(opts)) {
             opts = {
-                fn: opts
+                fn: opts,
             };
             cb = null;
         } else if (typeof opts === 'object') {
             if (!opts.fn) {
                 opts = {
-                    fn: opts
+                    fn: opts,
                 };
             }
         }
@@ -277,7 +278,9 @@ class Router {
      * request(uri, type, data, timeout)
      * request(uri, type, timeout)
      * request(uri, timeout)
-     * @function Router#request
+     * request(uri, data, params, timeout, cb)
+     * request(uri, data, params, cb)
+     * request(uri, data, cb)
      * @param {Object} opts 参数
      * @example
      * opts参数:{
@@ -288,19 +291,19 @@ class Router {
      *  timeout: 请求超时(可选, 单位毫秒, 默认0表示不检测超时)
      * }
      * @param cb 回调(可选)cb(err,doc)
-     * @returns {Object}
+     * @return {Object}
      */
-    request(opts, cb) {
+    request (opts, cb) {
         if (typeof opts === 'object') {
-            return this.handle(opts, cb || cb_default);
+            return this.handle(opts, cb || cbDefault);
         }
         let r = utils.preRequest.apply(this, arguments);
-        return this.handle(r.opts, r.cb || cb_default);
+        return this.handle(r.opts, r.cb || cbDefault);
     }
 
-    handle(opts, cb, next) {
+    handle (opts, cb, next) {
         if (!next) {
-            //is a request
+            // is a request
             let _opts = opts;
             let _cb = cb;
             opts = {};
@@ -313,7 +316,7 @@ class Router {
                 _cb(err, doc);
             };
             next = function (err, doc) {
-                cb(err || err_notfound, doc || Err.FA_NOTFOUND);
+                cb(err || errNotfound, doc || Err.FA_NOTFOUND);
             };
         }
 
@@ -384,7 +387,6 @@ class Router {
                 return self;
             };
         }
-
     }
 }
 

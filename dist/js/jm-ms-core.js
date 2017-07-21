@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var ERRCODE = 1;
+var ERRCODE = 900;
 
 exports.default = {
     FA_INVALIDTYPE: {
@@ -71,7 +71,7 @@ var Root = function () {
 
     /**
      * create a router
-     * @param opts
+     * @param {Object} opts
      * @return {Router}
      */
 
@@ -80,7 +80,6 @@ var Root = function () {
         key: 'router',
         value: function router() {
             var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
 
             var self = this;
             var app = new _router2.default(opts);
@@ -95,16 +94,10 @@ var Root = function () {
              * proxy({uri:uri, target:target, changeOrigin:true})
              * proxy(uri, target, changeOrigin)
              * proxy(uri, target)
-             * @function Router#proxy
-             * @param {Object} opts 参数
-             * @example
-             * opts参数:{
-             *  uri: 接口路径(必填)
-             *  target: 目标路径或者参数(必填)
-             *  changeOrigin: 是否改变originUri(可选， 默认fasle)
-             * }
-             * @param cb 回调cb(err,doc)
-             * @returns {this}
+             * @param {String} uri
+             * @param {String} target
+             * @param {boolean} changeOrigin 是否改变原始uri
+             * @param {function} cb 回调cb(err,doc)
              */
             app.proxy = function (uri, target, changeOrigin, cb) {
                 var opts = uri;
@@ -155,15 +148,15 @@ var Root = function () {
 
         /**
          * create a client
-         * @param {Object} opts 参数
+         * @param {Object} opts
          * @example
          * opts参数:{
          *  type: 类型(可选, 默认http)
          *  uri: uri(可选, 默认http://127.0.0.1)
          *  timeout: 请求超时(可选, 单位毫秒, 默认0表示不检测超时)
          * }
-         * @param cb 回调cb(err,doc)
-         * @return {Root} for chaining
+         * @param {function} cb 回调cb(err,doc)
+         * @return {Root} - for chaining
          */
 
     }, {
@@ -193,9 +186,9 @@ var Root = function () {
         }
 
         /**
-         * 创建服务器
-         * @function ms#server
-         * @param {Object} opts 参数
+         * create a server
+         * @param {Object} app
+         * @param {Object} opts
          * @example
          * opts参数:{
          *  uri: 网址(可选)
@@ -203,8 +196,8 @@ var Root = function () {
          *  host: 主机(可选, 默认127.0.0.1)
          *  port: 端口(可选, 默认80, 根据type不同默认值也不同)
          * }
-         * @param cb 回调cb(err,doc)
-         * @returns {jm.ms}
+         * @param {function} cb 回调cb(err,doc)
+         * @return {Root} - for chaining
          */
 
     }, {
@@ -240,14 +233,13 @@ var Root = function () {
          * 可以没有回调函数cb
          * proxy({uri:uri})
          * proxy(uri)
-         * @function ms#proxy
          * @param {Object} opts 参数
          * @example
          * opts参数:{
-             *  uri: 目标uri(必填)
-             * }
-         * @param cb 回调cb(err,doc)
-         * @returns {Router}
+         *  uri: 目标uri(必填)
+         * }
+         * @param {function} cb 回调cb(err,doc)
+         * @return {Router}
          */
 
     }, {
@@ -314,7 +306,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = Root;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./err":1,"./router":4,"./utils":5,"jm-err":6,"jm-event":7,"jm-module":8}],3:[function(require,module,exports){
+},{"./err":1,"./router":4,"./utils":5,"jm-err":6,"jm-event":9,"jm-module":10}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -387,12 +379,6 @@ var Route = function () {
 
     _createClass(Route, [{
         key: 'handle',
-
-
-        /**
-         * dispatch opts, cb into this route
-         * @private
-         */
         value: function handle(opts, cb, next) {
             var idx = 0;
             var fns = this.fns;
@@ -481,7 +467,7 @@ var Route = function () {
 
 exports.default = Route;
 module.exports = exports['default'];
-},{"path-to-regexp":10}],4:[function(require,module,exports){
+},{"path-to-regexp":12}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -514,8 +500,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Err = _jmErr2.default.Err;
 
-var err_notfound = _jmErr2.default.err(Err.FA_NOTFOUND);
-var cb_default = function cb_default(err, doc) {};
+var errNotfound = _jmErr2.default.err(Err.FA_NOTFOUND);
+var cbDefault = function cbDefault(err, doc) {};
 
 var slice = Array.prototype.slice;
 
@@ -693,7 +679,7 @@ var Router = function () {
                     opts.fn = function (opts, cb, next) {
                         router.handle(opts, cb, next);
                     };
-                } else if (_typeof(opts.fn) === "object") {
+                } else if (_typeof(opts.fn) === 'object') {
                     var _router = opts.fn;
                     if (_router.request) {
                         opts.router = _router;
@@ -759,7 +745,7 @@ var Router = function () {
                     uri: opts
                 };
                 if ((typeof cb === 'undefined' ? 'undefined' : _typeof(cb)) === 'object') {
-                    //object 或者 数组
+                    // object 或者 数组
                     opts.fn = cb;
                 } else {
                     opts.fn = slice.call(arguments, 1);
@@ -807,7 +793,9 @@ var Router = function () {
          * request(uri, type, data, timeout)
          * request(uri, type, timeout)
          * request(uri, timeout)
-         * @function Router#request
+         * request(uri, data, params, timeout, cb)
+         * request(uri, data, params, cb)
+         * request(uri, data, cb)
          * @param {Object} opts 参数
          * @example
          * opts参数:{
@@ -818,23 +806,23 @@ var Router = function () {
          *  timeout: 请求超时(可选, 单位毫秒, 默认0表示不检测超时)
          * }
          * @param cb 回调(可选)cb(err,doc)
-         * @returns {Object}
+         * @return {Object}
          */
 
     }, {
         key: 'request',
         value: function request(opts, cb) {
             if ((typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) === 'object') {
-                return this.handle(opts, cb || cb_default);
+                return this.handle(opts, cb || cbDefault);
             }
             var r = _utils2.default.preRequest.apply(this, arguments);
-            return this.handle(r.opts, r.cb || cb_default);
+            return this.handle(r.opts, r.cb || cbDefault);
         }
     }, {
         key: 'handle',
         value: function handle(opts, _cb2, next) {
             if (!next) {
-                //is a request
+                // is a request
                 var _opts = opts;
                 var _cb = _cb2;
                 opts = {};
@@ -847,7 +835,7 @@ var Router = function () {
                     _cb(err, doc);
                 };
                 next = function next(err, doc) {
-                    _cb2(err || err_notfound, doc || Err.FA_NOTFOUND);
+                    _cb2(err || errNotfound, doc || Err.FA_NOTFOUND);
                 };
             }
 
@@ -928,7 +916,7 @@ var Router = function () {
 
 exports.default = Router;
 module.exports = exports['default'];
-},{"./route":3,"./utils":5,"jm-err":6,"jm-event":7}],5:[function(require,module,exports){
+},{"./route":3,"./utils":5,"jm-err":6,"jm-event":9}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -944,7 +932,6 @@ var _jmUtils2 = _interopRequireDefault(_jmUtils);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var utils = _jmUtils2.default.utils;
-var slice = Array.prototype.slice;
 
 utils.enableType = function (obj, types) {
     if (!Array.isArray(types)) {
@@ -962,7 +949,7 @@ utils.enableType = function (obj, types) {
 };
 
 utils.preRequest = function (uri, type, data, params, timeout, cb) {
-    //uri为对象时直接返回
+    // uri为对象时直接返回
     if (typeof uri !== 'string') {
         return {
             opts: uri,
@@ -978,7 +965,7 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
         opts: opts
     };
 
-    //第2个参数可能为空，cb，timeout
+    // 第2个参数可能为空，cb，timeout, data
     if (type === undefined) {
         return r;
     }
@@ -987,12 +974,14 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
         return r;
     }
     if (typeof type === 'number') {
-        opts.timeout = type;
-    } else {
+        return utils.preRequest(uri, null, null, null, type, data);
+    } else if (type && (typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object') {
+        return utils.preRequest(uri, null, type, data, params, timeout);
+    } else if (typeof type === 'string') {
         opts.type = type;
     }
 
-    //第3个参数可能为空，cb，timeout, data
+    // 第3个参数可能为空，cb，timeout, data
     if (data === undefined) {
         return r;
     }
@@ -1001,12 +990,12 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
         return r;
     }
     if (typeof data === 'number') {
-        opts.timeout = data;
-    } else if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
+        return utils.preRequest(uri, type, null, null, data, params);
+    } else if (data && (typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
         opts.data = data;
     }
 
-    //第4个参数可能为空，cb，timeout, params
+    // 第4个参数可能为空，cb，timeout, params
     if (params === undefined) {
         return r;
     }
@@ -1015,12 +1004,12 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
         return r;
     }
     if (typeof params === 'number') {
-        opts.timeout = params;
-    } else if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
+        return utils.preRequest(uri, type, data, null, params, timeout);
+    } else if (params && (typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
         opts.params = params;
     }
 
-    //第5个参数可能为空，cb，timeout
+    // 第5个参数可能为空，cb，timeout
     if (timeout === undefined) {
         return r;
     }
@@ -1032,7 +1021,7 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
         opts.timeout = timeout;
     }
 
-    //第6个参数可能为空，cb
+    // 第6个参数可能为空，cb
     if (cb === undefined) {
         return r;
     }
@@ -1046,17 +1035,19 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
 
 exports.default = utils;
 module.exports = exports['default'];
-},{"jm-utils":9}],6:[function(require,module,exports){
+},{"jm-utils":11}],6:[function(require,module,exports){
 (function (global){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-/**
- * err module.
- * @module err
- */
+
+var _locale = require('./locale');
+
+var _locale2 = _interopRequireDefault(_locale);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * common error defines
@@ -1108,6 +1099,16 @@ var Err = {
         msg: 'Not Ready'
     },
 
+    FA_NOTEXISTS: {
+        err: 9,
+        msg: 'Not Exists'
+    },
+
+    FA_EXISTS: {
+        err: 8,
+        msg: 'Already Exists'
+    },
+
     OK: {
         err: 200,
         msg: 'OK'
@@ -1142,7 +1143,12 @@ var Err = {
         err: 503,
         msg: 'Service Unavailable'
     }
-};
+}; /**
+    * err module.
+    * @module err
+    */
+
+Err.t = _locale2.default;
 
 /**
  * return message from template
@@ -1256,7 +1262,64 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{"./locale":7}],7:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function (msg, lng) {
+    if (!lng || !lngs[lng]) return null;
+    return lngs[lng][msg];
+};
+
+var _zh_CN = require('./zh_CN');
+
+var _zh_CN2 = _interopRequireDefault(_zh_CN);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var lngs = {
+    zh_CN: _zh_CN2.default
+};
+
+/**
+ * translate
+ * @param {string} msg - msg to be translate
+ * @param {string} lng - language
+ * @return {String | null}
+ */
+;
+module.exports = exports['default'];
+},{"./zh_CN":8}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    'Success': '成功',
+    'Fail': '失败',
+    'System Error': '系统错误',
+    'Network Error': '网络错误',
+    'Parameter Error': '参数错误',
+    'Busy': '忙',
+    'Time Out': '超时',
+    'Abort': '中止',
+    'Not Ready': '未准备好',
+    'Not Exists': '不存在',
+    'Already Exists': '已存在',
+    'OK': 'OK',
+    'Bad Request': '错误请求',
+    'Unauthorized': '未验证',
+    'Forbidden': '无权限',
+    'Not Found': '未找到',
+    'Internal Server Error': '服务器内部错误',
+    'Service Unavailable': '无效服务'
+};
+module.exports = exports['default'];
+},{}],9:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1571,7 +1634,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1761,7 +1824,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1836,7 +1899,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var isarray = require('isarray')
 
 /**
@@ -2264,7 +2327,7 @@ function pathToRegexp (path, keys, options) {
   return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
 }
 
-},{"isarray":11}],11:[function(require,module,exports){
+},{"isarray":13}],13:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };

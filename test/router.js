@@ -33,7 +33,7 @@ describe('router', function () {
             .add({
                 uri: '/t1',
                 type: 'get',
-                fn: handle
+                fn: handle,
             }, cb)
             .get('/t1', function (err, doc) {
                 expect(doc.ret).to.be.ok;
@@ -43,7 +43,7 @@ describe('router', function () {
             .add({
                 uri: '/t2',
                 type: 'get',
-                fn: [handle1, handle]
+                fn: [handle1, handle],
             }, cb)
             .get('/t2', function (err, doc) {
                 expect(doc.ret).to.be.ok;
@@ -54,7 +54,7 @@ describe('router', function () {
             .add({
                 uri: '/t3',
                 type: 'get',
-                fn: handle
+                fn: handle,
             })
             .get('/t3', function (err, doc) {
                 expect(doc.ret).to.be.ok;
@@ -64,7 +64,7 @@ describe('router', function () {
             .add({
                 uri: '/t4',
                 type: 'get',
-                fn: [handle1, handle]
+                fn: [handle1, handle],
             })
             .get('/t4', function (err, doc) {
                 expect(doc.ret).to.be.ok;
@@ -84,7 +84,7 @@ describe('router', function () {
             })
 
             // * add(uri, [fn1, fn2, ..,fnn])
-            .add('/t7', [handle1, handle])
+            .add('/t7', [handle1, handle,])
             .get('/t7', function (err, doc) {
                 expect(doc.ret).to.be.ok;
             })
@@ -101,7 +101,7 @@ describe('router', function () {
                 expect(doc.ret).to.be.ok;
             })
             // * add(uri, type, [fn1, fn2, ..,fnn])
-            .add('/t10', 'get', [handle1, handle])
+            .add('/t10', 'get', [handle1, handle,])
             .get('/t10', function (err, doc) {
                 expect(doc.ret).to.be.ok;
             })
@@ -111,7 +111,7 @@ describe('router', function () {
     it('use', function () {
         let uri = '/test';
         let fn = handle;
-        let fns = [handle1, handle2];
+        let fns = [handle1, handle2,];
         let router = new Router();
         router.use(fn);
         o
@@ -139,7 +139,7 @@ describe('router', function () {
             .clear()
             .use({
                 uri: uri, fn: {
-                    handle: fn
+                    handle: fn,
                 }
             }, cb)
             .get(uri, function (err, doc) {
@@ -148,7 +148,7 @@ describe('router', function () {
             .clear()
             .use({
                 uri: uri, fn: {
-                    request: fn
+                    request: fn,
                 }
             }, cb)
             .get(uri, function (err, doc) {
@@ -163,7 +163,7 @@ describe('router', function () {
             // * 可以没有回调函数cb
             // * use({uri:uri, fn:fn})
             .clear()
-            .use({uri: uri, fn: fn})
+            .use({uri: uri, fn: fn,})
             .get(uri, function (err, doc) {
                 expect(doc.ret).to.be.ok;
             })

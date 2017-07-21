@@ -13,7 +13,7 @@ class Root {
     /**
      * create a root
      */
-    constructor() {
+    constructor () {
         error.enableErr(this);
         mdl.enableModule(this);
         this.utils = utils;
@@ -23,11 +23,10 @@ class Root {
 
     /**
      * create a router
-     * @param opts
+     * @param {Object} opts
      * @return {Router}
      */
-    router(opts = {}) {
-
+    router (opts = {}) {
         let self = this;
         let app = new Router(opts);
 
@@ -41,23 +40,17 @@ class Root {
          * proxy({uri:uri, target:target, changeOrigin:true})
          * proxy(uri, target, changeOrigin)
          * proxy(uri, target)
-         * @function Router#proxy
-         * @param {Object} opts 参数
-         * @example
-         * opts参数:{
-         *  uri: 接口路径(必填)
-         *  target: 目标路径或者参数(必填)
-         *  changeOrigin: 是否改变originUri(可选， 默认fasle)
-         * }
-         * @param cb 回调cb(err,doc)
-         * @returns {this}
+         * @param {String} uri
+         * @param {String} target
+         * @param {boolean} changeOrigin 是否改变原始uri
+         * @param {function} cb 回调cb(err,doc)
          */
         app.proxy = function (uri, target, changeOrigin, cb) {
             let opts = uri;
             if (typeof uri === 'string') {
                 opts = {
                     uri: uri,
-                    target: target
+                    target: target,
                 };
                 if (typeof changeOrigin === 'boolean') {
                     opts.changeOrigin = changeOrigin;
@@ -90,10 +83,10 @@ class Root {
                 });
             } else {
                 self.proxy(opts.target, function (err, doc) {
-                    if (err) return cb(err, doc)
+                    if (err) return cb(err, doc);
                     app.use(opts.uri, doc);
                     cb(err, doc);
-                })
+                });
             }
         };
         return app;
@@ -101,17 +94,17 @@ class Root {
 
     /**
      * create a client
-     * @param {Object} opts 参数
+     * @param {Object} opts
      * @example
      * opts参数:{
      *  type: 类型(可选, 默认http)
      *  uri: uri(可选, 默认http://127.0.0.1)
      *  timeout: 请求超时(可选, 单位毫秒, 默认0表示不检测超时)
      * }
-     * @param cb 回调cb(err,doc)
-     * @return {Root} for chaining
+     * @param {function} cb 回调cb(err,doc)
+     * @return {Root} - for chaining
      */
-    client(opts = {}, cb = null) {
+    client (opts = {}, cb = null) {
         let err = null;
         let doc = null;
         let type = 'http';
@@ -133,9 +126,9 @@ class Root {
     }
 
     /**
-     * 创建服务器
-     * @function ms#server
-     * @param {Object} opts 参数
+     * create a server
+     * @param {Object} app
+     * @param {Object} opts
      * @example
      * opts参数:{
      *  uri: 网址(可选)
@@ -143,10 +136,10 @@ class Root {
      *  host: 主机(可选, 默认127.0.0.1)
      *  port: 端口(可选, 默认80, 根据type不同默认值也不同)
      * }
-     * @param cb 回调cb(err,doc)
-     * @returns {jm.ms}
+     * @param {function} cb 回调cb(err,doc)
+     * @return {Root} - for chaining
      */
-    server(app = null, opts = {}, cb = null) {
+    server (app = null, opts = {}, cb = null) {
         let err = null;
         let doc = null;
         let type = 'http';
@@ -173,16 +166,15 @@ class Root {
      * 可以没有回调函数cb
      * proxy({uri:uri})
      * proxy(uri)
-     * @function ms#proxy
      * @param {Object} opts 参数
      * @example
      * opts参数:{
-         *  uri: 目标uri(必填)
-         * }
-     * @param cb 回调cb(err,doc)
-     * @returns {Router}
+     *  uri: 目标uri(必填)
+     * }
+     * @param {function} cb 回调cb(err,doc)
+     * @return {Router}
      */
-    proxy(opts = {}, cb = null) {
+    proxy (opts = {}, cb = null) {
         let err = null;
         let doc = null;
         if (typeof opts === 'string') {

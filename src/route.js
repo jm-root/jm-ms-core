@@ -16,7 +16,7 @@ class Route {
      *
      * }
      */
-    constructor(opts = {}) {
+    constructor (opts = {}) {
         this.uri = opts.uri || '/';
         this.type = opts.type;
         this._fns = [];
@@ -50,15 +50,11 @@ class Route {
         }
     }
 
-    get fns() {
+    get fns () {
         return this._fns;
     }
 
-    /**
-     * dispatch opts, cb into this route
-     * @private
-     */
-    handle(opts, cb, next) {
+    handle (opts, cb, next) {
         let idx = 0;
         let fns = this.fns;
         if (fns.length === 0) {
@@ -92,7 +88,7 @@ class Route {
      * @return {Boolean}
      * @api private
      */
-    match(uri, type) {
+    match (uri, type) {
         this.params = undefined;
         this.uri = undefined;
 
