@@ -937,19 +937,50 @@ var _jmUtils2 = _interopRequireDefault(_jmUtils);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var utils = _jmUtils2.default.utils;
-
 utils.enableType = function (obj, types) {
   if (!Array.isArray(types)) {
     types = [types];
   }
   types.forEach(function (type) {
-    obj[type] = function (uri, data, params, timeout, cb) {
-      if (typeof uri === 'string') {
-        return obj.request(uri, type, data, params, timeout, cb);
-      }
-      uri.type = type;
-      return obj.request(uri, data);
-    };
+    if (typeof Promise !== 'undefined') {
+      obj[type] = function (uri, data, params, timeout, cb) {
+        var opts = uri;
+        if (typeof uri === 'string') {
+          var r = utils.preRequest.apply(this, arguments);
+          opts = r.opts;
+          cb = r.cb;
+        } else {
+          cb = data;
+        }
+        opts.type = type;
+
+        if (cb) {
+          this[type](opts).then(function (doc) {
+            cb(null, doc);
+          }).catch(function (err) {
+            cb(err);
+          });
+          return this;
+        }
+
+        return new Promise(function (resolve, reject) {
+          obj.request(opts, function (err, doc) {
+            if (err) {
+              return reject(err);
+            }
+            resolve(doc);
+          });
+        });
+      };
+    } else {
+      obj[type] = function (uri, data, params, timeout, cb) {
+        if (typeof uri === 'string') {
+          return obj.request(uri, type, data, params, timeout, cb);
+        }
+        uri.type = type;
+        return obj.request(uri, data);
+      };
+    }
   });
 };
 
