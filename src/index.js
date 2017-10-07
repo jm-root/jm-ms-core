@@ -211,17 +211,17 @@ if (typeof global !== 'undefined' && global) {
 
     ms.proxy = (opts, cb) => {
       root.proxy(opts, cb)
-      return this
+      return ms
     }
 
     ms.client = (opts, cb) => {
       root.client(opts, cb)
-      return this
+      return ms
     }
 
     ms.server = (opts, cb) => {
       root.server(opts, cb)
-      return this
+      return ms
     }
   }
 }
