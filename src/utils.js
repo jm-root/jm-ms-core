@@ -31,7 +31,7 @@ utils.enableType = function (obj, types) {
 
         return new Promise(function (resolve, reject) {
           obj.request(opts, function (err, doc) {
-            if (err) {
+            if (err && !doc) {
               return reject(err)
             }
             resolve(doc)
