@@ -1,6 +1,6 @@
 {
   "name": "jm-ms-core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "MicroService core lib",
   "main": "./lib/index",
   "scripts": {
@@ -25,18 +25,18 @@
   },
   "homepage": "https://github.com/jm-root/jm-ms-core",
   "dependencies": {
-    "jm-err": "^1.0.0",
-    "jm-event": "^1.0.1",
-    "jm-module": "^1.0.0",
+    "jm-err": "^1.0.2",
+    "jm-event": "^1.0.2",
+    "jm-module": "^1.0.1",
     "jm-utils": "^1.0.1",
     "path-to-regexp": "^1.7.0"
   },
   "devDependencies": {
-    "bluebird": "^3.5.0",
-    "babel-cli": "^6.24.1",
+    "babel-cli": "^6.26.0",
     "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-env": "^1.5.1",
+    "babel-preset-env": "^1.6.1",
     "benchmark": "^2.1.4",
+    "bluebird": "^3.5.0",
     "chai": "^4.0.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.7.0",
