@@ -293,11 +293,22 @@ class Router {
      * @return {Object}
      */
   request (opts, cb) {
-    if (typeof opts === 'object') {
-      return this.handle(opts, cb || cbDefault)
+    if (typeof opts !== 'object') {
+      let r = utils.preRequest.apply(this, arguments)
+      opts = r.opts
+      cb = r.cb
     }
-    let r = utils.preRequest.apply(this, arguments)
-    return this.handle(r.opts, r.cb || cbDefault)
+    if ((typeof Promise) !== 'undefined' && !cb) {
+      let self = this
+      return new Promise((resolve, reject) => {
+        self.handle(opts, (err, doc) => {
+          if(doc && doc.err) err = error.err(doc)
+          if(err) return reject(err)
+          resolve(doc)
+        })
+      })
+    }
+    return this.handle(opts, cb || cbDefault)
   }
 
   handle (opts, cb, next) {
