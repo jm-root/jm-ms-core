@@ -1,5 +1,8 @@
 # History
 
+## 1.0.6 / 2018-05-07
+- router.request support promise
+
 ## 1.0.4 / 2017-10-07
 - fixed jm.ms.server jm.ms.client jm.ms.proxy return ms
 
