@@ -305,7 +305,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = Root;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./err":1,"./router":4,"./utils":5,"jm-err":6,"jm-event":9,"jm-module":10}],3:[function(require,module,exports){
+},{"./err":1,"./router":4,"./utils":5,"jm-err":7,"jm-event":10,"jm-module":11}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -469,7 +469,7 @@ var Route = function () {
 
 exports.default = Route;
 module.exports = exports['default'];
-},{"path-to-regexp":12}],4:[function(require,module,exports){
+},{"path-to-regexp":13}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -513,15 +513,15 @@ var slice = Array.prototype.slice;
 
 var Router = function () {
   /**
-     * create a router.
-     * @param {Object} opts 参数
-     * @example
-     * opts参数:{
-     *  mergeParams: 是否合并参数(可选)
-     *  sensitive: 是否大小写敏感(可选)
-     *  strict: 是否检查末尾的分隔符(可选)
-     * }
-     */
+   * create a router.
+   * @param {Object} opts 参数
+   * @example
+   * opts参数:{
+   *  mergeParams: 是否合并参数(可选)
+   *  sensitive: 是否大小写敏感(可选)
+   *  strict: 是否检查末尾的分隔符(可选)
+   * }
+   */
   function Router() {
     var _this = this;
 
@@ -543,27 +543,27 @@ var Router = function () {
 
 
     /**
-       * clear all routes.
-       * @return {Router} for chaining
-       */
+     * clear all routes.
+     * @return {Router} for chaining
+     */
     value: function clear() {
       this._routes = [];
       return this;
     }
 
     /**
-       * 添加接口定义
-       * @function Router#_add
-       * @param {Object} opts 参数
-       * @example
-       * opts参数:{
-           *  uri: 接口路径(必填)
-           *  type: 请求类型(可选)
-           *  fn: 接口处理函数 function(opts, cb){}, 支持数组(必填)
-           * }
-       * @param cb 回调cb(err,doc)
-       * @return {Router} for chaining
-       */
+     * 添加接口定义
+     * @function Router#_add
+     * @param {Object} opts 参数
+     * @example
+     * opts参数:{
+     *  uri: 接口路径(必填)
+     *  type: 请求类型(可选)
+     *  fn: 接口处理函数 function(opts, cb){}, 支持数组(必填)
+     * }
+     * @param cb 回调cb(err,doc)
+     * @return {Router} for chaining
+     */
 
   }, {
     key: '_add',
@@ -591,31 +591,31 @@ var Router = function () {
     }
 
     /**
-       * 添加接口定义
-       * 支持多种参数格式, 例如
-       * add({uri:uri, type:type, fn:fn}, cb)
-       * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]}, cb)
-       * 可以没有回调函数cb
-       * add({uri:uri, type:type, fn:fn})
-       * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]})
-       * 以下用法不能包含cb
-       * add(uri, fn)
-       * add(uri, fn1, fn2, ..., fnn)
-       * add(uri, [fn1, fn2, ..,fnn])
-       * add(uri, type, fn)
-       * add(uri, type, fn1, fn2, ..., fnn)
-       * add(uri, type, [fn1, fn2, ..,fnn])
-       * @function Router#add
-       * @param {Object} opts 参数
-       * @example
-       * opts参数:{
-       *  uri: 接口路径(必填)
-       *  type: 请求类型(可选)
-       *  fn: 接口处理函数 function(opts, cb){}, 支持数组(必填)
-       * }
-       * @param cb 回调cb(err,doc)
-       * @return {Router} for chaining
-       */
+     * 添加接口定义
+     * 支持多种参数格式, 例如
+     * add({uri:uri, type:type, fn:fn}, cb)
+     * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]}, cb)
+     * 可以没有回调函数cb
+     * add({uri:uri, type:type, fn:fn})
+     * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]})
+     * 以下用法不能包含cb
+     * add(uri, fn)
+     * add(uri, fn1, fn2, ..., fnn)
+     * add(uri, [fn1, fn2, ..,fnn])
+     * add(uri, type, fn)
+     * add(uri, type, fn1, fn2, ..., fnn)
+     * add(uri, type, [fn1, fn2, ..,fnn])
+     * @function Router#add
+     * @param {Object} opts 参数
+     * @example
+     * opts参数:{
+     *  uri: 接口路径(必填)
+     *  type: 请求类型(可选)
+     *  fn: 接口处理函数 function(opts, cb){}, 支持数组(必填)
+     * }
+     * @param cb 回调cb(err,doc)
+     * @return {Router} for chaining
+     */
 
   }, {
     key: 'add',
@@ -642,17 +642,17 @@ var Router = function () {
     }
 
     /**
-       * 引用路由定义
-       * @function Router#_use
-       * @param {Object} opts 参数
-       * @example
-       * opts参数:{
-       *  uri: 接口路径(可选)
-       *  fn: 接口处理函数 router实例 或者 function(opts, cb){}(支持函数数组) 或者含有request或handle函数的对象(必填)
-       * }
-       * @param cb 回调cb(err,doc)
-       * @return {Router} for chaining
-       */
+     * 引用路由定义
+     * @function Router#_use
+     * @param {Object} opts 参数
+     * @example
+     * opts参数:{
+     *  uri: 接口路径(可选)
+     *  fn: 接口处理函数 router实例 或者 function(opts, cb){}(支持函数数组) 或者含有request或handle函数的对象(必填)
+     * }
+     * @param cb 回调cb(err,doc)
+     * @return {Router} for chaining
+     */
 
   }, {
     key: '_use',
@@ -704,39 +704,39 @@ var Router = function () {
     }
 
     /**
-       * 引用路由定义
-       * 支持多种参数格式, 例如
-       * use({uri:uri, fn:fn}, cb)
-       * use({uri:uri, fn:[fn1, fn2, ..., fnn]}, cb)
-       * use({uri:uri, fn:router}, cb)
-       * use({uri:uri, fn:obj}, cb)
-       * use(router, cb)
-       * 可以没有回调函数cb
-       * use({uri:uri, fn:fn})
-       * use({uri:uri, fn:[fn1, fn2, ..., fnn]})
-       * use({uri:uri, fn:router})
-       * use({uri:uri, fn:obj})
-       * use(router)
-       * use(obj) obj必须实现了request或者handle函数之一，优先使用request
-       * 以下用法不能包含cb
-       * use(uri, fn)
-       * use(uri, fn1, fn2, ..., fnn)
-       * use(uri, [fn1, fn2, ..,fnn])
-       * use(uri, router)
-       * use(uri, obj)
-       * use(uri, fn)
-       * use(fn1, fn2, ..., fnn)
-       * use([fn1, fn2, ..,fnn])
-       * @function Router#use
-       * @param {Object} opts 参数
-       * @example
-       * opts参数:{
-       *  uri: 接口路径(可选)
-       *  fn: 接口处理函数 router实例 或者 function(opts, cb){}(必填)
-       * }
-       * @param cb 回调cb(err,doc)
-       * @return {Router} for chaining
-       */
+     * 引用路由定义
+     * 支持多种参数格式, 例如
+     * use({uri:uri, fn:fn}, cb)
+     * use({uri:uri, fn:[fn1, fn2, ..., fnn]}, cb)
+     * use({uri:uri, fn:router}, cb)
+     * use({uri:uri, fn:obj}, cb)
+     * use(router, cb)
+     * 可以没有回调函数cb
+     * use({uri:uri, fn:fn})
+     * use({uri:uri, fn:[fn1, fn2, ..., fnn]})
+     * use({uri:uri, fn:router})
+     * use({uri:uri, fn:obj})
+     * use(router)
+     * use(obj) obj必须实现了request或者handle函数之一，优先使用request
+     * 以下用法不能包含cb
+     * use(uri, fn)
+     * use(uri, fn1, fn2, ..., fnn)
+     * use(uri, [fn1, fn2, ..,fnn])
+     * use(uri, router)
+     * use(uri, obj)
+     * use(uri, fn)
+     * use(fn1, fn2, ..., fnn)
+     * use([fn1, fn2, ..,fnn])
+     * @function Router#use
+     * @param {Object} opts 参数
+     * @example
+     * opts参数:{
+     *  uri: 接口路径(可选)
+     *  fn: 接口处理函数 router实例 或者 function(opts, cb){}(必填)
+     * }
+     * @param cb 回调cb(err,doc)
+     * @return {Router} for chaining
+     */
 
   }, {
     key: 'use',
@@ -774,41 +774,41 @@ var Router = function () {
     }
 
     /**
-       * 请求
-       * 支持多种参数格式, 例如
-       * request({uri:uri, type:type, data:data, params:params, timeout:timeout}, cb)
-       * request({uri:uri, type:type, data:data, params:params, timeout:timeout})
-       * request(uri, type, data, params, timeout, cb)
-       * request(uri, type, data, params, cb)
-       * request(uri, type, data, cb)
-       * request(uri, type, cb)
-       * request(uri, cb)
-       * request(uri, type, data, params, timeout)
-       * request(uri, type, data, params)
-       * request(uri, type, data)
-       * request(uri, type)
-       * request(uri)
-       * request(uri, type, data, timeout, cb)
-       * request(uri, type, timeout, cb)
-       * request(uri, timeout, cb)
-       * request(uri, type, data, timeout)
-       * request(uri, type, timeout)
-       * request(uri, timeout)
-       * request(uri, data, params, timeout, cb)
-       * request(uri, data, params, cb)
-       * request(uri, data, cb)
-       * @param {Object} opts 参数
-       * @example
-       * opts参数:{
-       *  uri: 接口路径(必填)
-       *  type: 请求类型(可选)
-       *  data: 请求数据(可选)
-       *  params: 请求参数(可选)
-       *  timeout: 请求超时(可选, 单位毫秒, 默认0表示不检测超时)
-       * }
-       * @param cb 回调(可选)cb(err,doc)
-       * @return {Object}
-       */
+     * 请求
+     * 支持多种参数格式, 例如
+     * request({uri:uri, type:type, data:data, params:params, timeout:timeout}, cb)
+     * request({uri:uri, type:type, data:data, params:params, timeout:timeout})
+     * request(uri, type, data, params, timeout, cb)
+     * request(uri, type, data, params, cb)
+     * request(uri, type, data, cb)
+     * request(uri, type, cb)
+     * request(uri, cb)
+     * request(uri, type, data, params, timeout)
+     * request(uri, type, data, params)
+     * request(uri, type, data)
+     * request(uri, type)
+     * request(uri)
+     * request(uri, type, data, timeout, cb)
+     * request(uri, type, timeout, cb)
+     * request(uri, timeout, cb)
+     * request(uri, type, data, timeout)
+     * request(uri, type, timeout)
+     * request(uri, timeout)
+     * request(uri, data, params, timeout, cb)
+     * request(uri, data, params, cb)
+     * request(uri, data, cb)
+     * @param {Object} opts 参数
+     * @example
+     * opts参数:{
+     *  uri: 接口路径(必填)
+     *  type: 请求类型(可选)
+     *  data: 请求数据(可选)
+     *  params: 请求参数(可选)
+     *  timeout: 请求超时(可选, 单位毫秒, 默认0表示不检测超时)
+     * }
+     * @param cb 回调(可选)cb(err,doc)
+     * @return {Object}
+     */
 
   }, {
     key: 'request',
@@ -822,7 +822,7 @@ var Router = function () {
         var self = this;
         return new Promise(function (resolve, reject) {
           self.handle(opts, function (err, doc) {
-            if (doc && doc.err) err = _jmErr2.default.err(doc);
+            if (!err && doc && doc.err) err = _jmErr2.default.err(doc);
             if (err) return reject(err);
             resolve(doc);
           });
@@ -861,6 +861,7 @@ var Router = function () {
       var uri = opts.uri;
       _next();
       return self;
+
       function _next(err, doc) {
         if (err) {
           if (err === 'route') {
@@ -932,7 +933,7 @@ var Router = function () {
 
 exports.default = Router;
 module.exports = exports['default'];
-},{"./route":3,"./utils":5,"jm-err":6,"jm-event":9}],5:[function(require,module,exports){
+},{"./route":3,"./utils":5,"jm-err":7,"jm-event":10}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1081,7 +1082,12 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
 
 exports.default = utils;
 module.exports = exports['default'];
-},{"jm-utils":11}],6:[function(require,module,exports){
+},{"jm-utils":12}],6:[function(require,module,exports){
+module.exports = Array.isArray || function (arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]';
+};
+
+},{}],7:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1287,7 +1293,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./locale":7}],7:[function(require,module,exports){
+},{"./locale":8}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1316,7 +1322,7 @@ var lngs = {
    */
 };;
 module.exports = exports['default'];
-},{"./zh_CN":8}],8:[function(require,module,exports){
+},{"./zh_CN":9}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1343,7 +1349,7 @@ exports.default = {
   'Service Unavailable': '无效服务'
 };
 module.exports = exports['default'];
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1614,7 +1620,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1758,82 +1764,179 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (global){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-var utils = {
-    // 高效slice
-    slice: function slice(a, start, end) {
-        start = start || 0;
-        end = end || a.length;
-        if (start < 0) start += a.length;
-        if (end < 0) end += a.length;
-        var r = new Array(end - start);
-        for (var i = start; i < end; i++) {
-            r[i - start] = a[i];
-        }
-        return r;
-    },
 
-    formatJSON: function formatJSON(obj) {
-        return JSON.stringify(obj, null, 2);
-    },
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-    getUriProtocol: function getUriProtocol(uri) {
-        if (!uri) return null;
-        return uri.substring(0, uri.indexOf(':'));
-    },
+var argsClass = '[object Arguments]';
+var arrayClass = '[object Array]';
+var boolClass = '[object Boolean]';
+var dateClass = '[object Date]';
+var funcClass = '[object Function]';
+var numberClass = '[object Number]';
+var objectClass = '[object Object]';
+var regexpClass = '[object RegExp]';
+var stringClass = '[object String]';
 
-    getUriPath: function getUriPath(uri) {
-        var idx = uri.indexOf('//');
-        if (idx == -1) return '';
-        idx = uri.indexOf('/', idx + 2);
-        if (idx == -1) return '';
-        uri = uri.substr(idx);
-        idx = uri.indexOf('#');
-        if (idx == -1) idx = uri.indexOf('?');
-        if (idx != -1) uri = uri.substr(0, idx);
-        return uri;
+/** Used to identify object classifications that `cloneDeep` supports */
+var cloneableClasses = {};
+cloneableClasses[funcClass] = false;
+cloneableClasses[argsClass] = true;
+cloneableClasses[arrayClass] = true;
+cloneableClasses[boolClass] = true;
+cloneableClasses[dateClass] = true;
+cloneableClasses[numberClass] = true;
+cloneableClasses[objectClass] = true;
+cloneableClasses[regexpClass] = true;
+cloneableClasses[stringClass] = true;
+
+var ctorByClass = {};
+ctorByClass[arrayClass] = Array;
+ctorByClass[boolClass] = Boolean;
+ctorByClass[dateClass] = Date;
+ctorByClass[objectClass] = Object;
+ctorByClass[numberClass] = Number;
+ctorByClass[regexpClass] = RegExp;
+ctorByClass[stringClass] = String;
+
+/** Used to match regexp flags from their coerced string values */
+var reFlags = /\w*$/;
+
+var cloneDeep = function cloneDeep(obj) {
+  if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || !obj) return obj;
+  if (Array.isArray(obj)) {
+    var _ret = [];
+    obj.forEach(function (item) {
+      _ret.push(cloneDeep(item));
+    });
+    return _ret;
+  }
+  var className = toString.call(obj);
+  if (!cloneableClasses[className]) {
+    return obj;
+  }
+  var ctor = ctorByClass[className];
+  switch (className) {
+    case boolClass:
+    case dateClass:
+      return new ctor(+obj);
+
+    case numberClass:
+    case stringClass:
+      return new ctor(obj);
+
+    case regexpClass:
+      return ctor(obj.source, reFlags.exec(obj));
+  }
+
+  var ret = {};
+  var keys = Object.keys(obj);
+  keys.forEach(function (key) {
+    ret[key] = cloneDeep(obj[key]);
+  });
+  return ret;
+};
+
+var merge = function merge(obj1, obj2) {
+  if ((typeof obj1 === 'undefined' ? 'undefined' : _typeof(obj1)) !== 'object' || !obj1) return obj1;
+  if (Array.isArray(obj1)) {
+    obj2.forEach(function (item) {
+      if (obj1.indexOf(item) === -1) {
+        obj1.push(item);
+      }
+    });
+    return obj1;
+  }
+  var keys = Object.keys(obj2);
+  keys.forEach(function (key) {
+    if (obj1[key] && _typeof(obj1[key]) === 'object' && _typeof(obj2[key]) === 'object') {
+      merge(obj1[key], obj2[key]);
+    } else {
+      obj1[key] = obj2[key];
     }
+  });
+  return obj1;
+};
+
+var utils = {
+  // 高效slice
+  slice: function slice(a, start, end) {
+    start = start || 0;
+    end = end || a.length;
+    if (start < 0) start += a.length;
+    if (end < 0) end += a.length;
+    var r = new Array(end - start);
+    for (var i = start; i < end; i++) {
+      r[i - start] = a[i];
+    }
+    return r;
+  },
+
+  formatJSON: function formatJSON(obj) {
+    return JSON.stringify(obj, null, 2);
+  },
+
+  getUriProtocol: function getUriProtocol(uri) {
+    if (!uri) return null;
+    return uri.substring(0, uri.indexOf(':'));
+  },
+
+  getUriPath: function getUriPath(uri) {
+    var idx = uri.indexOf('//');
+    if (idx === -1) return '';
+    idx = uri.indexOf('/', idx + 2);
+    if (idx === -1) return '';
+    uri = uri.substr(idx);
+    idx = uri.indexOf('#');
+    if (idx === -1) idx = uri.indexOf('?');
+    if (idx !== -1) uri = uri.substr(0, idx);
+    return uri;
+  },
+
+  cloneDeep: cloneDeep,
+
+  merge: merge
 };
 
 var moduleUtils = function moduleUtils() {
-    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'utils';
+  var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'utils';
 
-    var app = this;
-    app[name] = utils;
+  var app = this;
+  app[name] = utils;
 
-    return {
-        name: name,
-        unuse: function unuse() {
-            delete app[name];
-        }
-    };
+  return {
+    name: name,
+    unuse: function unuse() {
+      delete app[name];
+    }
+  };
 };
 
 var $ = {
-    utils: utils,
-    moduleUtils: moduleUtils
+  utils: utils,
+  moduleUtils: moduleUtils
 };
 
 if (typeof global !== 'undefined' && global) {
-    global.jm || (global.jm = {});
-    var jm = global.jm;
-    if (!jm.utils) {
-        for (var key in $) {
-            jm[key] = $[key];
-        }
+  global.jm || (global.jm = {});
+  var jm = global.jm;
+  if (!jm.utils) {
+    for (var key in $) {
+      jm[key] = $[key];
     }
+  }
 }
 
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var isarray = require('isarray')
 
 /**
@@ -2261,9 +2364,4 @@ function pathToRegexp (path, keys, options) {
   return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
 }
 
-},{"isarray":13}],13:[function(require,module,exports){
-module.exports = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
-};
-
-},{}]},{},[2])
+},{"isarray":6}]},{},[2])

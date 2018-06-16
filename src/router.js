@@ -2,6 +2,7 @@ import Route from './route'
 import utils from './utils'
 import error from 'jm-err'
 import event from 'jm-event'
+
 let Err = error.Err
 
 let errNotfound = error.err(Err.FA_NOTFOUND)
@@ -15,15 +16,15 @@ let slice = Array.prototype.slice
  */
 class Router {
   /**
-     * create a router.
-     * @param {Object} opts 参数
-     * @example
-     * opts参数:{
-     *  mergeParams: 是否合并参数(可选)
-     *  sensitive: 是否大小写敏感(可选)
-     *  strict: 是否检查末尾的分隔符(可选)
-     * }
-     */
+   * create a router.
+   * @param {Object} opts 参数
+   * @example
+   * opts参数:{
+   *  mergeParams: 是否合并参数(可选)
+   *  sensitive: 是否大小写敏感(可选)
+   *  strict: 是否检查末尾的分隔符(可选)
+   * }
+   */
   constructor (opts = {}) {
     this._routes = [];
     ['mergeParams', 'sensitive', 'strict'].forEach((key) => {
@@ -39,27 +40,27 @@ class Router {
   }
 
   /**
-     * clear all routes.
-     * @return {Router} for chaining
-     */
+   * clear all routes.
+   * @return {Router} for chaining
+   */
   clear () {
     this._routes = []
     return this
   }
 
   /**
-     * 添加接口定义
-     * @function Router#_add
-     * @param {Object} opts 参数
-     * @example
-     * opts参数:{
-         *  uri: 接口路径(必填)
-         *  type: 请求类型(可选)
-         *  fn: 接口处理函数 function(opts, cb){}, 支持数组(必填)
-         * }
-     * @param cb 回调cb(err,doc)
-     * @return {Router} for chaining
-     */
+   * 添加接口定义
+   * @function Router#_add
+   * @param {Object} opts 参数
+   * @example
+   * opts参数:{
+   *  uri: 接口路径(必填)
+   *  type: 请求类型(可选)
+   *  fn: 接口处理函数 function(opts, cb){}, 支持数组(必填)
+   * }
+   * @param cb 回调cb(err,doc)
+   * @return {Router} for chaining
+   */
   _add (opts, cb) {
     opts = opts || {}
     let err = null
@@ -84,31 +85,31 @@ class Router {
   }
 
   /**
-     * 添加接口定义
-     * 支持多种参数格式, 例如
-     * add({uri:uri, type:type, fn:fn}, cb)
-     * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]}, cb)
-     * 可以没有回调函数cb
-     * add({uri:uri, type:type, fn:fn})
-     * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]})
-     * 以下用法不能包含cb
-     * add(uri, fn)
-     * add(uri, fn1, fn2, ..., fnn)
-     * add(uri, [fn1, fn2, ..,fnn])
-     * add(uri, type, fn)
-     * add(uri, type, fn1, fn2, ..., fnn)
-     * add(uri, type, [fn1, fn2, ..,fnn])
-     * @function Router#add
-     * @param {Object} opts 参数
-     * @example
-     * opts参数:{
-     *  uri: 接口路径(必填)
-     *  type: 请求类型(可选)
-     *  fn: 接口处理函数 function(opts, cb){}, 支持数组(必填)
-     * }
-     * @param cb 回调cb(err,doc)
-     * @return {Router} for chaining
-     */
+   * 添加接口定义
+   * 支持多种参数格式, 例如
+   * add({uri:uri, type:type, fn:fn}, cb)
+   * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]}, cb)
+   * 可以没有回调函数cb
+   * add({uri:uri, type:type, fn:fn})
+   * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]})
+   * 以下用法不能包含cb
+   * add(uri, fn)
+   * add(uri, fn1, fn2, ..., fnn)
+   * add(uri, [fn1, fn2, ..,fnn])
+   * add(uri, type, fn)
+   * add(uri, type, fn1, fn2, ..., fnn)
+   * add(uri, type, [fn1, fn2, ..,fnn])
+   * @function Router#add
+   * @param {Object} opts 参数
+   * @example
+   * opts参数:{
+   *  uri: 接口路径(必填)
+   *  type: 请求类型(可选)
+   *  fn: 接口处理函数 function(opts, cb){}, 支持数组(必填)
+   * }
+   * @param cb 回调cb(err,doc)
+   * @return {Router} for chaining
+   */
   add (opts, cb) {
     if (typeof opts === 'string') {
       opts = {
@@ -132,17 +133,17 @@ class Router {
   }
 
   /**
-     * 引用路由定义
-     * @function Router#_use
-     * @param {Object} opts 参数
-     * @example
-     * opts参数:{
-     *  uri: 接口路径(可选)
-     *  fn: 接口处理函数 router实例 或者 function(opts, cb){}(支持函数数组) 或者含有request或handle函数的对象(必填)
-     * }
-     * @param cb 回调cb(err,doc)
-     * @return {Router} for chaining
-     */
+   * 引用路由定义
+   * @function Router#_use
+   * @param {Object} opts 参数
+   * @example
+   * opts参数:{
+   *  uri: 接口路径(可选)
+   *  fn: 接口处理函数 router实例 或者 function(opts, cb){}(支持函数数组) 或者含有request或handle函数的对象(必填)
+   * }
+   * @param cb 回调cb(err,doc)
+   * @return {Router} for chaining
+   */
   _use (opts, cb) {
     opts = opts || {}
     let err = null
@@ -191,39 +192,39 @@ class Router {
   }
 
   /**
-     * 引用路由定义
-     * 支持多种参数格式, 例如
-     * use({uri:uri, fn:fn}, cb)
-     * use({uri:uri, fn:[fn1, fn2, ..., fnn]}, cb)
-     * use({uri:uri, fn:router}, cb)
-     * use({uri:uri, fn:obj}, cb)
-     * use(router, cb)
-     * 可以没有回调函数cb
-     * use({uri:uri, fn:fn})
-     * use({uri:uri, fn:[fn1, fn2, ..., fnn]})
-     * use({uri:uri, fn:router})
-     * use({uri:uri, fn:obj})
-     * use(router)
-     * use(obj) obj必须实现了request或者handle函数之一，优先使用request
-     * 以下用法不能包含cb
-     * use(uri, fn)
-     * use(uri, fn1, fn2, ..., fnn)
-     * use(uri, [fn1, fn2, ..,fnn])
-     * use(uri, router)
-     * use(uri, obj)
-     * use(uri, fn)
-     * use(fn1, fn2, ..., fnn)
-     * use([fn1, fn2, ..,fnn])
-     * @function Router#use
-     * @param {Object} opts 参数
-     * @example
-     * opts参数:{
-     *  uri: 接口路径(可选)
-     *  fn: 接口处理函数 router实例 或者 function(opts, cb){}(必填)
-     * }
-     * @param cb 回调cb(err,doc)
-     * @return {Router} for chaining
-     */
+   * 引用路由定义
+   * 支持多种参数格式, 例如
+   * use({uri:uri, fn:fn}, cb)
+   * use({uri:uri, fn:[fn1, fn2, ..., fnn]}, cb)
+   * use({uri:uri, fn:router}, cb)
+   * use({uri:uri, fn:obj}, cb)
+   * use(router, cb)
+   * 可以没有回调函数cb
+   * use({uri:uri, fn:fn})
+   * use({uri:uri, fn:[fn1, fn2, ..., fnn]})
+   * use({uri:uri, fn:router})
+   * use({uri:uri, fn:obj})
+   * use(router)
+   * use(obj) obj必须实现了request或者handle函数之一，优先使用request
+   * 以下用法不能包含cb
+   * use(uri, fn)
+   * use(uri, fn1, fn2, ..., fnn)
+   * use(uri, [fn1, fn2, ..,fnn])
+   * use(uri, router)
+   * use(uri, obj)
+   * use(uri, fn)
+   * use(fn1, fn2, ..., fnn)
+   * use([fn1, fn2, ..,fnn])
+   * @function Router#use
+   * @param {Object} opts 参数
+   * @example
+   * opts参数:{
+   *  uri: 接口路径(可选)
+   *  fn: 接口处理函数 router实例 或者 function(opts, cb){}(必填)
+   * }
+   * @param cb 回调cb(err,doc)
+   * @return {Router} for chaining
+   */
   use (opts, cb) {
     if (typeof opts === 'string') {
       opts = {
@@ -257,41 +258,41 @@ class Router {
   }
 
   /**
-     * 请求
-     * 支持多种参数格式, 例如
-     * request({uri:uri, type:type, data:data, params:params, timeout:timeout}, cb)
-     * request({uri:uri, type:type, data:data, params:params, timeout:timeout})
-     * request(uri, type, data, params, timeout, cb)
-     * request(uri, type, data, params, cb)
-     * request(uri, type, data, cb)
-     * request(uri, type, cb)
-     * request(uri, cb)
-     * request(uri, type, data, params, timeout)
-     * request(uri, type, data, params)
-     * request(uri, type, data)
-     * request(uri, type)
-     * request(uri)
-     * request(uri, type, data, timeout, cb)
-     * request(uri, type, timeout, cb)
-     * request(uri, timeout, cb)
-     * request(uri, type, data, timeout)
-     * request(uri, type, timeout)
-     * request(uri, timeout)
-     * request(uri, data, params, timeout, cb)
-     * request(uri, data, params, cb)
-     * request(uri, data, cb)
-     * @param {Object} opts 参数
-     * @example
-     * opts参数:{
-     *  uri: 接口路径(必填)
-     *  type: 请求类型(可选)
-     *  data: 请求数据(可选)
-     *  params: 请求参数(可选)
-     *  timeout: 请求超时(可选, 单位毫秒, 默认0表示不检测超时)
-     * }
-     * @param cb 回调(可选)cb(err,doc)
-     * @return {Object}
-     */
+   * 请求
+   * 支持多种参数格式, 例如
+   * request({uri:uri, type:type, data:data, params:params, timeout:timeout}, cb)
+   * request({uri:uri, type:type, data:data, params:params, timeout:timeout})
+   * request(uri, type, data, params, timeout, cb)
+   * request(uri, type, data, params, cb)
+   * request(uri, type, data, cb)
+   * request(uri, type, cb)
+   * request(uri, cb)
+   * request(uri, type, data, params, timeout)
+   * request(uri, type, data, params)
+   * request(uri, type, data)
+   * request(uri, type)
+   * request(uri)
+   * request(uri, type, data, timeout, cb)
+   * request(uri, type, timeout, cb)
+   * request(uri, timeout, cb)
+   * request(uri, type, data, timeout)
+   * request(uri, type, timeout)
+   * request(uri, timeout)
+   * request(uri, data, params, timeout, cb)
+   * request(uri, data, params, cb)
+   * request(uri, data, cb)
+   * @param {Object} opts 参数
+   * @example
+   * opts参数:{
+   *  uri: 接口路径(必填)
+   *  type: 请求类型(可选)
+   *  data: 请求数据(可选)
+   *  params: 请求参数(可选)
+   *  timeout: 请求超时(可选, 单位毫秒, 默认0表示不检测超时)
+   * }
+   * @param cb 回调(可选)cb(err,doc)
+   * @return {Object}
+   */
   request (opts, cb) {
     if (typeof opts !== 'object') {
       let r = utils.preRequest.apply(this, arguments)
@@ -302,8 +303,8 @@ class Router {
       let self = this
       return new Promise((resolve, reject) => {
         self.handle(opts, (err, doc) => {
-          if(doc && doc.err) err = error.err(doc)
-          if(err) return reject(err)
+          if (!err && doc && doc.err) err = error.err(doc)
+          if (err) return reject(err)
           resolve(doc)
         })
       })
@@ -340,6 +341,7 @@ class Router {
     let uri = opts.uri
     _next()
     return self
+
     function _next (err, doc) {
       if (err) {
         if (err === 'route') { return next() } else { return done(err, doc) }
