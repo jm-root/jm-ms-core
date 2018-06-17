@@ -68,7 +68,6 @@ suite
     console.log('Fastest is ' + this.filter('fastest').map('name'))
   })
 
-
 if (require.main === module) {
   suite.run({async: true})
 } else {
