@@ -305,7 +305,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = Root;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./err":1,"./router":4,"./utils":5,"jm-err":7,"jm-event":10,"jm-module":11}],3:[function(require,module,exports){
+},{"./err":1,"./router":4,"./utils":5,"jm-err":6,"jm-event":9,"jm-module":10}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -469,7 +469,7 @@ var Route = function () {
 
 exports.default = Route;
 module.exports = exports['default'];
-},{"path-to-regexp":13}],4:[function(require,module,exports){
+},{"path-to-regexp":12}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -933,7 +933,7 @@ var Router = function () {
 
 exports.default = Router;
 module.exports = exports['default'];
-},{"./route":3,"./utils":5,"jm-err":7,"jm-event":10}],5:[function(require,module,exports){
+},{"./route":3,"./utils":5,"jm-err":6,"jm-event":9}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -945,6 +945,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var _jmUtils = require('jm-utils');
 
 var _jmUtils2 = _interopRequireDefault(_jmUtils);
+
+var _jmErr = require('jm-err');
+
+var _jmErr2 = _interopRequireDefault(_jmErr);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -977,9 +981,8 @@ utils.enableType = function (obj, types) {
 
         return new Promise(function (resolve, reject) {
           obj.request(opts, function (err, doc) {
-            if (err && !doc) {
-              return reject(err);
-            }
+            if (!err && doc && doc.err) err = _jmErr2.default.err(doc);
+            if (err) return reject(err);
             resolve(doc);
           });
         });
@@ -1082,12 +1085,7 @@ utils.preRequest = function (uri, type, data, params, timeout, cb) {
 
 exports.default = utils;
 module.exports = exports['default'];
-},{"jm-utils":12}],6:[function(require,module,exports){
-module.exports = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
-};
-
-},{}],7:[function(require,module,exports){
+},{"jm-err":6,"jm-utils":11}],6:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1293,7 +1291,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./locale":8}],8:[function(require,module,exports){
+},{"./locale":7}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1322,7 +1320,7 @@ var lngs = {
    */
 };;
 module.exports = exports['default'];
-},{"./zh_CN":9}],9:[function(require,module,exports){
+},{"./zh_CN":8}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1349,7 +1347,7 @@ exports.default = {
   'Service Unavailable': '无效服务'
 };
 module.exports = exports['default'];
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1620,7 +1618,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1764,7 +1762,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1936,7 +1934,7 @@ if (typeof global !== 'undefined' && global) {
 exports.default = $;
 module.exports = exports['default'];
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var isarray = require('isarray')
 
 /**
@@ -2364,4 +2362,9 @@ function pathToRegexp (path, keys, options) {
   return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
 }
 
-},{"isarray":6}]},{},[2])
+},{"isarray":13}],13:[function(require,module,exports){
+module.exports = Array.isArray || function (arr) {
+  return Object.prototype.toString.call(arr) == '[object Array]';
+};
+
+},{}]},{},[2])
