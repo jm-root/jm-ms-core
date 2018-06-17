@@ -1,4 +1,5 @@
 import util from 'jm-utils'
+import error from 'jm-err'
 
 let utils = util.utils
 utils.enableType = function (obj, types) {
@@ -31,9 +32,8 @@ utils.enableType = function (obj, types) {
 
         return new Promise(function (resolve, reject) {
           obj.request(opts, function (err, doc) {
-            if (err && !doc) {
-              return reject(err)
-            }
+            if (!err && doc && doc.err) err = error.err(doc)
+            if (err) return reject(err)
             resolve(doc)
           })
         })
