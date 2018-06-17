@@ -1,8 +1,5 @@
-import chai from 'chai'
-
-let expect = chai.expect
-import MS from '../src'
-import utils from '../src/utils'
+const MS = require('../src')
+const utils = require('../src/utils')
 
 let handle = (opts, cb, next) => {
   cb(null, {ret: 1})
@@ -13,8 +10,8 @@ let cb = (err, doc) => {
   if (doc) console.log('%j', doc)
 }
 
-let ms = new MS()
-let app = ms.router()
+let msTest = new MS()
+let app = msTest.router()
 
 let mdlTest = function (opts, cb) {
   let app = this
@@ -33,19 +30,19 @@ let mdlTest = function (opts, cb) {
     name: 'test',
     unuse: () => {
       delete app.clientModules.http
-    },
+    }
   }
 }
 
-describe('ms', function () {
-  it('router', function () {
-    expect(app).to.be.an('object')
+describe('ms', () => {
+  test('router', () => {
+    expect(app).toBeTruthy()
     app.add('/', handle)
     app.request('/', cb)
   })
 
-  it('router promise', function () {
-    expect(app).to.be.an('object')
+  test('router promise', () => {
+    expect(app).toBeTruthy()
     app.add('/', 'get', handle)
     app.get('/')
       .then(function (doc) {
@@ -56,12 +53,12 @@ describe('ms', function () {
       })
   })
 
-  it('use', function () {
-    ms.use(mdlTest)
-    ms.client({uri: 'http://ww.ja.cnom'}, function (err, doc) {
-      expect(doc).to.be.an('object')
+  test('use', () => {
+    msTest.use(mdlTest)
+    msTest.client({uri: 'http://ww.ja.cnom'}, function (err, doc) {
+      expect(doc).toBeTruthy()
       doc.get('/', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
     })
   })

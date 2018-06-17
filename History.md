@@ -1,5 +1,10 @@
 # History
 
+## 1.0.7 / 2018-06-17
+- utils.enableType
+- format code
+- mocha -> jest
+
 ## 1.0.6 / 2018-05-07
 - router.request support promise
 

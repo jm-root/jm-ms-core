@@ -1,7 +1,4 @@
-import chai from 'chai'
-
-let expect = chai.expect
-import Router from '../src/router'
+const Router = require('../src/router')
 
 let handle1 = (opts, cb, next) => {
   console.log('handle1')
@@ -23,31 +20,31 @@ let cb = (err, doc) => {
 
 let o = new Router({
   sensitive: true,
-  strict: true,
+  strict: true
 })
 
-describe('router', function () {
-  it('add', function () {
+describe('router', () => {
+  test('add', () => {
     o
       .clear()
       // * add({uri:uri, type:type, fn:fn}, cb)
       .add({
         uri: '/t1',
         type: 'get',
-        fn: handle,
+        fn: handle
       }, cb)
       .get('/t1', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]}, cb)
       .add({
         uri: '/t2',
         type: 'get',
-        fn: [handle1, handle],
+        fn: [handle1, handle]
       }, cb)
       .get('/t2', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * 可以没有回调函数cb
@@ -55,64 +52,63 @@ describe('router', function () {
       .add({
         uri: '/t3',
         type: 'get',
-        fn: handle,
+        fn: handle
       })
       .get('/t3', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * add({uri:uri, type:type, fn:[fn1, fn2, ..., fnn]})
       .add({
         uri: '/t4',
         type: 'get',
-        fn: [handle1, handle],
+        fn: [handle1, handle]
       })
       .get('/t4', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * 以下用法不能包含cb
       // * add(uri, fn)
       .add('/t5', handle)
       .get('/t5', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * add(uri, fn1, fn2, ..., fnn)
       .add('/t6', handle1, handle)
       .get('/t6', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * add(uri, [fn1, fn2, ..,fnn])
-      .add('/t7', [handle1, handle,])
+      .add('/t7', [handle1, handle])
       .get('/t7', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * add(uri, type, fn)
       .add('/t8', 'get', handle)
       .get('/t8', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * add(uri, type, fn1, fn2, ..., fnn)
       .add('/t9', 'get', handle1, handle)
       .get('/t9', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * add(uri, type, [fn1, fn2, ..,fnn])
-      .add('/t10', 'get', [handle1, handle,])
+      .add('/t10', 'get', [handle1, handle])
       .get('/t10', function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
-
   })
 
-  it('use', function () {
+  test('use', () => {
     let uri = '/test'
     let fn = handle
-    let fns = [handle1, handle2,]
+    let fns = [handle1, handle2]
     let router = new Router()
     router.use(fn)
     o
@@ -122,89 +118,93 @@ describe('router', function () {
       .clear()
       .use({uri: uri, fn: fn}, cb)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * use({uri:uri, fn:[fn1, fn2, ..., fnn]}, cb)
       .clear()
       .use({uri: uri, fn: fns}, cb)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * use({uri:uri, fn:router}, cb)
       .clear()
       .use({uri: uri, fn: router}, cb)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * use({uri:uri, fn:obj}, cb)
       .clear()
       .use({
-        uri: uri, fn: {
-          handle: fn,
+        uri: uri,
+        fn: {
+          handle: fn
         }
       }, cb)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       .clear()
       .use({
-        uri: uri, fn: {
-          request: fn,
+        uri: uri,
+        fn: {
+          request: fn
         }
       }, cb)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * use(router, cb)
       .clear()
       .use(router, cb)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * 可以没有回调函数cb
       // * use({uri:uri, fn:fn})
       .clear()
-      .use({uri: uri, fn: fn,})
+      .use({uri: uri, fn: fn})
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * use({uri:uri, fn:[fn1, fn2, ..., fnn]})
       .clear()
       .use({uri: uri, fn: fns})
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * use({uri:uri, fn:router})
       .clear()
       .use({uri: uri, fn: router})
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * use({uri:uri, fn:obj})
       .clear()
       .use({
-        uri: uri, fn: {
+        uri: uri,
+        fn: {
           request: fn
         }
       })
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       .clear()
       .use({
-        uri: uri, fn: {
+        uri: uri,
+        fn: {
           handle: fn
         }
       })
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * use(router)
       .clear()
       .use(router)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * use(obj) obj必须实现了request或者handle函数之一，优先使用request
@@ -213,27 +213,27 @@ describe('router', function () {
       .clear()
       .use(uri, fn)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       // * use(uri, fn1, fn2, ..., fnn)
       .clear()
       .use(uri, handle1, fn)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * use(uri, [fn1, fn2, ..,fnn])
       .clear()
       .use(uri, fns)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * use(uri, router)
       .clear()
       .use(uri, router)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * use(uri, obj)
@@ -242,47 +242,46 @@ describe('router', function () {
         request: fn
       })
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
       .clear()
       .use(uri, {
         handle: fn
       })
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * use(uri, fn)
       .clear()
       .use(uri, fn)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * use(fn1, fn2, ..., fnn)
       .clear()
       .use(handle1, fn)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
 
       // * use([fn1, fn2, ..,fnn])
       .clear()
       .use(fns)
       .get(uri, function (err, doc) {
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
       })
-
   })
 
-  it('promise', function (done) {
+  test('promise', done => {
     o
       .clear()
       .use(handle)
       .request('/')
       .then(doc => {
         console.log(doc)
-        expect(doc.ret).to.be.ok
+        expect(doc.ret).toBeTruthy()
         done()
       })
       .catch(e => {
@@ -290,14 +289,14 @@ describe('router', function () {
       })
   })
 
-  it('err', function () {
+  test('err', () => {
     o.clear()
     o.use(handle2)
     o.add('/', handle)
     o.request('/', cb)
   })
 
-  it('err promise', function (done) {
+  test('err promise', done => {
     o.clear()
     o.use(handle2)
     o.add('/', handle)
@@ -311,5 +310,4 @@ describe('router', function () {
         done()
       })
   })
-
 })

@@ -1,19 +1,16 @@
-import chai from 'chai'
+const utils = require('../src/utils')
 
-let expect = chai.expect
-import utils from '../src/utils'
-
-describe('utils', function () {
-  it('preRequest', function () {
+describe('utils', () => {
+  test('preRequest', () => {
     let v = ['uri', 'type', 'data', 'params', 'timeout']
     let uri = '/test'
     let type = 'get'
     let data = {
       name: 'jeff',
-      age: 18,
+      age: 18
     }
     let params = {
-      token: 'asdfasdjfk',
+      token: 'asdfasdjfk'
     }
     let timeout = 1000
     let opts = {
@@ -21,7 +18,7 @@ describe('utils', function () {
       type: type,
       data: data,
       params: params,
-      timeout: timeout,
+      timeout: timeout
     }
     let cb = function (err, doc) {
     }
@@ -38,13 +35,13 @@ describe('utils', function () {
     let pre = utils.preRequest
 
     // request({uri:uri, type:type, data:data, params:params, timeout:timeout}, cb)
-    expect(check(pre(opts, cb), {opts: opts, cb: cb})).to.be.ok
+    expect(check(pre(opts, cb), {opts: opts, cb: cb})).toBeTruthy()
 
     // request({uri:uri, type:type, data:data, params:params, timeout:timeout})
-    expect(check(pre(opts), {opts: opts})).to.be.ok
+    expect(check(pre(opts), {opts: opts})).toBeTruthy()
 
     // request(uri, type, data, params, timeout, cb)
-    expect(check(pre(uri, type, data, params, timeout, cb), {opts: opts, cb: cb})).to.be.ok
+    expect(check(pre(uri, type, data, params, timeout, cb), {opts: opts, cb: cb})).toBeTruthy()
 
     // request(uri, type, data, params, cb)
     expect(check(pre(uri, type, data, params, cb), {
@@ -52,36 +49,40 @@ describe('utils', function () {
         uri: uri,
         type: type,
         data: data,
-        params: params,
-      }, cb: cb,
-    })).to.be.ok
+        params: params
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, type, data, cb)
     expect(check(pre(uri, type, data, cb), {
       opts: {
         uri: uri,
         type: type,
-        data: data,
-      }, cb: cb,
-    })).to.be.ok
+        data: data
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, type, cb)
     expect(check(pre(uri, type, cb), {
       opts: {
         uri: uri,
-        type: type,
-      }, cb: cb,
-    })).to.be.ok
+        type: type
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, cb)
     expect(check(pre(uri, cb), {
       opts: {
-        uri: uri,
-      }, cb: cb,
-    })).to.be.ok
+        uri: uri
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, type, data, params, timeout)
-    expect(check(pre(uri, type, data, params, timeout), {opts: opts})).to.be.ok
+    expect(check(pre(uri, type, data, params, timeout), {opts: opts})).toBeTruthy()
 
     // request(uri, type, data, params)
     expect(check(pre(uri, type, data, params), {
@@ -89,33 +90,33 @@ describe('utils', function () {
         uri: uri,
         type: type,
         data: data,
-        params: params,
+        params: params
       }
-    })).to.be.ok
+    })).toBeTruthy()
 
     // request(uri, type, data)
     expect(check(pre(uri, type, data), {
       opts: {
         uri: uri,
         type: type,
-        data: data,
-      },
-    })).to.be.ok
+        data: data
+      }
+    })).toBeTruthy()
 
     // request(uri, type)
     expect(check(pre(uri, type), {
       opts: {
         uri: uri,
-        type: type,
-      },
-    })).to.be.ok
+        type: type
+      }
+    })).toBeTruthy()
 
     // request(uri)
     expect(check(pre(uri), {
       opts: {
-        uri: uri,
-      },
-    })).to.be.ok
+        uri: uri
+      }
+    })).toBeTruthy()
 
     // request(uri, type, data, timeout, cb)
     expect(check(pre(uri, type, data, timeout, cb), {
@@ -123,26 +124,29 @@ describe('utils', function () {
         uri: uri,
         type: type,
         data: data,
-        timeout: timeout,
-      }, cb: cb,
-    })).to.be.ok
+        timeout: timeout
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, type, timeout, cb)
     expect(check(pre(uri, type, timeout, cb), {
       opts: {
         uri: uri,
         type: type,
-        timeout: timeout,
-      }, cb: cb,
-    })).to.be.ok
+        timeout: timeout
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, timeout, cb)
     expect(check(pre(uri, timeout, cb), {
       opts: {
         uri: uri,
-        timeout: timeout,
-      }, cb: cb,
-    })).to.be.ok
+        timeout: timeout
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, type, data, timeout)
     expect(check(pre(uri, type, data, timeout), {
@@ -150,26 +154,26 @@ describe('utils', function () {
         uri: uri,
         type: type,
         data: data,
-        timeout: timeout,
-      },
-    })).to.be.ok
+        timeout: timeout
+      }
+    })).toBeTruthy()
 
     // request(uri, type, timeout)
     expect(check(pre(uri, type, timeout), {
       opts: {
         uri: uri,
         type: type,
-        timeout: timeout,
-      },
-    })).to.be.ok
+        timeout: timeout
+      }
+    })).toBeTruthy()
 
     // request(uri, timeout)
     expect(check(pre(uri, timeout), {
       opts: {
         uri: uri,
-        timeout: timeout,
-      },
-    })).to.be.ok
+        timeout: timeout
+      }
+    })).toBeTruthy()
 
     // request(uri, data, params, timeout, cb)
     expect(check(pre(uri, data, params, timeout, cb), {
@@ -178,8 +182,9 @@ describe('utils', function () {
         data,
         params,
         timeout
-      }, cb: cb,
-    })).to.be.ok
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, data, timeout, cb)
     expect(check(pre(uri, data, timeout, cb), {
@@ -187,26 +192,27 @@ describe('utils', function () {
         uri,
         data,
         timeout
-      }, cb: cb,
-    })).to.be.ok
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, data, params, cb)
     expect(check(pre(uri, data, params, cb), {
       opts: {
         uri,
         data,
-        params,
-      }, cb: cb,
-    })).to.be.ok
+        params
+      },
+      cb: cb
+    })).toBeTruthy()
 
     // request(uri, data, cb)
     expect(check(pre(uri, data, cb), {
       opts: {
         uri,
-        data,
-      }, cb: cb,
-    })).to.be.ok
-
+        data
+      },
+      cb: cb
+    })).toBeTruthy()
   })
-
 })

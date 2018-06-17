@@ -1,7 +1,4 @@
-import chai from 'chai'
-
-let expect = chai.expect
-import Route from '../src/route'
+const Route = require('../src/route')
 
 let cb_default = () => {
 }
@@ -53,51 +50,50 @@ let cb = (err, doc) => {
   console.log('%j', doc)
 }
 
-describe('route', function () {
-  it('Route', function () {
+describe('route', () => {
+  test('Route', () => {
     let o = new Route({
       fn: handle
     })
-    expect(o).to.be.an('object')
+    expect(o).toBeTruthy()
   })
 
-  it('match', function () {
+  test('match', () => {
     let o = new Route({
       uri: '/',
       fn: handle
     })
-    expect(o.match()).not.to.be.ok
-    expect(o.uri === undefined && o.params === undefined).to.be.ok
-    expect(o.match('/')).to.be.ok
-    expect(o.uri === '/' && o.params).to.be.ok
-    expect(o.match('/abc')).not.to.be.ok
+    expect(o.match()).not.toBeTruthy()
+    expect(o.uri === undefined && o.params === undefined).toBeTruthy()
+    expect(o.match('/')).toBeTruthy()
+    expect(o.uri === '/' && o.params).toBeTruthy()
+    expect(o.match('/abc')).not.toBeTruthy()
 
     o = new Route({
       end: false,
       fn: handle
     })
-    expect(o.match()).not.to.be.ok
-    expect(o.uri === undefined && o.params === undefined).to.be.ok
-    expect(o.match('')).to.be.ok
-    expect(o.uri === '' && o.params).to.be.ok
-    expect(o.match('/')).to.be.ok
-    expect(o.uri === '' && o.params).to.be.ok
-    expect(o.match('/abc')).to.be.ok
-    expect(o.uri === '' && o.params).to.be.ok
+    expect(o.match()).not.toBeTruthy()
+    expect(o.uri === undefined && o.params === undefined).toBeTruthy()
+    expect(o.match('')).toBeTruthy()
+    expect(o.uri === '' && o.params).toBeTruthy()
+    expect(o.match('/')).toBeTruthy()
+    expect(o.uri === '' && o.params).toBeTruthy()
+    expect(o.match('/abc')).toBeTruthy()
+    expect(o.uri === '' && o.params).toBeTruthy()
 
     o = new Route({
       uri: '/',
       fn: handle,
       type: 'get'
     })
-    expect(o.match('/', 'get')).to.be.ok
-    expect(o.uri === '/' && o.params).to.be.ok
-    expect(o.match('/abc')).not.to.be.ok
-    expect(o.uri === undefined && o.params === undefined).to.be.ok
-
+    expect(o.match('/', 'get')).toBeTruthy()
+    expect(o.uri === '/' && o.params).toBeTruthy()
+    expect(o.match('/abc')).not.toBeTruthy()
+    expect(o.uri === undefined && o.params === undefined).toBeTruthy()
   })
 
-  it('handle', function () {
+  test('handle', () => {
     let o = new Route({
       fn: handle
     })
@@ -107,7 +103,5 @@ describe('route', function () {
       fn: [handle1, handle2, handle]
     })
     o.handle({}, cb, cb)
-
   })
-
 })
