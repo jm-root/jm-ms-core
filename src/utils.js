@@ -25,14 +25,17 @@ utils.enableType = function (obj, types) {
               cb(null, doc)
             })
             .catch(function (err) {
-              cb(err)
+              cb(err, err.data)
             })
           return this
         }
 
         return new Promise(function (resolve, reject) {
           obj.request(opts, function (err, doc) {
-            if (!err && doc && doc.err) err = error.err(doc)
+            if (!err && doc && doc.err) {
+              err = error.err(doc)
+              err.data = doc
+            }
             if (err) return reject(err)
             resolve(doc)
           })

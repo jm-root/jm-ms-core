@@ -974,7 +974,7 @@ utils.enableType = function (obj, types) {
           this[type](opts).then(function (doc) {
             cb(null, doc);
           }).catch(function (err) {
-            cb(err);
+            cb(err, err.data);
           });
           return this;
         }
@@ -1099,10 +1099,19 @@ var _locale2 = _interopRequireDefault(_locale);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function isNumber(obj) {
+  return typeof obj === 'number' && isFinite(obj);
+}
+
 /**
  * common error defines
  *
  */
+/**
+ * err module.
+ * @module err
+ */
+
 var Err = {
   SUCCESS: {
     err: 0,
@@ -1193,10 +1202,7 @@ var Err = {
     err: 503,
     msg: 'Service Unavailable'
   }
-}; /**
-    * err module.
-    * @module err
-    */
+};
 
 Err.t = _locale2.default;
 
@@ -1234,8 +1240,16 @@ var err = function err(E, opts) {
     };
   }
   var msg = errMsg(E.msg, opts);
+  var code = E.err;
+  code === undefined && (code = Err.FAIL.err);
+  var status = Err.FA_INTERNALERROR.err;
+  if (code === Err.SUCCESS.err) status = 200;
+  if (isNumber(code) && code >= 200 && code <= 600) status = code;
+  E.status !== undefined && (status = E.status);
   var e = new Error(msg);
-  E.err && (e.code = E.err);
+  e.code = code;
+  e.status = status;
+  e.data = { err: code, msg: msg, status: status };
   return e;
 };
 
