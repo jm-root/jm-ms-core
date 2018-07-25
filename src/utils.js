@@ -34,9 +34,11 @@ utils.enableType = function (obj, types) {
           obj.request(opts, function (err, doc) {
             if (!err && doc && doc.err) {
               err = error.err(doc)
-              err.data = doc
             }
-            if (err) return reject(err)
+            if (err) {
+              err.data || (err.data = doc)
+              return reject(err)
+            }
             resolve(doc)
           })
         })
